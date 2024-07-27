@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -18,7 +19,11 @@ public class HotelReservationSystemView extends JFrame {
 
     //For View Hottel
     private JPanel viewHotelPanel;
+    private JButton btnViewDetails, btnCheckAvailability, btnRoomInfo, btnReservationInfo;
 
+    // For Mange Hotel
+    private JPanel manageHotelsPanel;
+    private JButton btnAddRoom, btnRemoveRoom, btnChangeName,btnChangePrice, btnDeleteHotel, btnDatePrice;
 
     // For Simulate Booking
     private JPanel simulateBookingPanel;
@@ -33,6 +38,7 @@ public class HotelReservationSystemView extends JFrame {
         initMainMenuPanel();
         initCreateHotelPanel();
         initViewHotelPanel();
+        initManageHotelsPanel();
         initSimulateBookingPanel();
 
 
@@ -175,7 +181,7 @@ public class HotelReservationSystemView extends JFrame {
 
 
         JComboBox<String> hotelComboBox = new JComboBox<>();
-        JButton viewButton = new JButton("View Details");
+        btnViewDetails = new JButton("View Details");
 
         JLabel hotelLabel = new JLabel("Select Hotel:");
         hotelLabel.setFont(labelFont);
@@ -186,9 +192,9 @@ public class HotelReservationSystemView extends JFrame {
         // Create a panel to center the button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setSize(new Dimension(5, 5)); // Fixed size for the panel
-        viewButton.setFont(new Font("Arial", Font.BOLD, 16));
-        viewButton.setSize(new Dimension(30, 5)); // Fixed size for the button
-        buttonPanel.add(viewButton);
+        btnViewDetails.setFont(new Font("Arial", Font.BOLD, 16));
+        btnViewDetails.setSize(new Dimension(30, 5)); // Fixed size for the button
+        buttonPanel.add(btnViewDetails);
 
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS)); // Use BoxLayout for vertical arrangement
@@ -229,17 +235,17 @@ public class HotelReservationSystemView extends JFrame {
         infoPanel.add(estimatedEarningsLabel);
         infoPanel.add(numOfAvailableRoomsLabel);
 
-        JButton checkAvailabilityButton = new JButton("Check Availability");
-        JButton roomInfoButton = new JButton("Room Information");
-        JButton reservationInfoButton = new JButton("Reservation Information");
+         btnCheckAvailability = new JButton("Check Availability");
+         btnRoomInfo = new JButton("Room Information");
+         btnReservationInfo = new JButton("Reservation Information");
 
         // Add buttons to the infoPanel
-        lowLevelButtonPanel.add(checkAvailabilityButton);
-        lowLevelButtonPanel.add(roomInfoButton);
-        lowLevelButtonPanel.add(reservationInfoButton);
+        lowLevelButtonPanel.add(btnCheckAvailability);
+        lowLevelButtonPanel.add(btnRoomInfo);
+        lowLevelButtonPanel.add(btnReservationInfo);
 
         hotelSelectionPanel.add(hotelComboBox, BorderLayout.NORTH);
-        hotelSelectionPanel.add(viewButton, BorderLayout.NORTH);
+        hotelSelectionPanel.add(btnViewDetails, BorderLayout.NORTH);
         viewHotelPanel.add(hotelSelectionPanel, BorderLayout.NORTH);
         viewHotelPanel.add(infoPanel, BorderLayout.CENTER);
         viewHotelPanel.add(lowLevelButtonPanel, BorderLayout.SOUTH);
@@ -247,6 +253,134 @@ public class HotelReservationSystemView extends JFrame {
 
     }
 
+    private void initManageHotelsPanel() {
+
+        manageHotelsPanel = new JPanel(new BorderLayout());
+        manageHotelsPanel.setPreferredSize(new Dimension(550, 500));
+        manageHotelsPanel.setBackground(new Color(30, 144, 255));
+        manageHotelsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        JComboBox<String> hotelComboBox = new JComboBox<>();
+        hotelComboBox.setSelectedItem(null);
+
+
+
+        JPanel formPanel = new JPanel(new GridLayout(0, 2, 10, 10));
+        formPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        formPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        formPanel.add(new JLabel("Select Hotel:"), gbc);
+        gbc.gridx = 1;
+        formPanel.add(hotelComboBox, gbc);
+        gbc.gridx = 2;
+
+        JComboBox<String> typeOfRoomBox = new JComboBox<>();
+
+        typeOfRoomBox.addItem("Standard");
+        typeOfRoomBox.addItem("Deluxe");
+        typeOfRoomBox.addItem("Executive");
+        typeOfRoomBox.setSelectedItem(null);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        formPanel.add(new JLabel("Select Room Type:"), gbc);
+        gbc.gridx = 1;
+        formPanel.add(typeOfRoomBox, gbc);
+
+        JComboBox<String> addRoomsBox = new JComboBox<>();
+        addRoomsBox.setSelectedItem(null);
+         btnAddRoom = new JButton("Add");
+        btnAddRoom.setFont(new Font("Arial", Font.BOLD, 12));
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        formPanel.add(new JLabel("Add Rooms:"), gbc);
+        gbc.gridx = 1;
+        formPanel.add(addRoomsBox, gbc);
+        gbc.gridx = 2;
+        btnAddRoom.setFont(new Font("Arial", Font.BOLD, 12));
+        formPanel.add(btnAddRoom, gbc);
+
+        JComboBox<String> removeRoomsBox = new JComboBox<>();
+        removeRoomsBox.setSelectedItem(null);
+         btnRemoveRoom = new JButton("Remove");
+        btnRemoveRoom.setFont(new Font("Arial", Font.BOLD, 12));
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        formPanel.add(new JLabel("Remove Rooms:"), gbc);
+        gbc.gridx = 1;
+        formPanel.add(removeRoomsBox, gbc);
+        gbc.gridx = 2;
+        formPanel.add(btnRemoveRoom, gbc);
+
+        JLabel changeNameLabel = new JLabel("Change Hotel Name to:");
+        JTextField changeNameTextField = new JTextField(15);
+         btnChangeName = new JButton("Change Hotel Name");
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 1;
+        formPanel.add(changeNameLabel, gbc);
+        gbc.gridx = 1;
+        formPanel.add(changeNameTextField, gbc);
+        gbc.gridx = 2;
+        formPanel.add(btnChangeName, gbc);
+
+        JLabel changePriceLabel = new JLabel("Change Hotel Base Price to (price >= 100):");
+        JTextField changePriceTextField = new JTextField(15);
+         btnChangePrice = new JButton("Change Price");
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 1;
+        formPanel.add(changePriceLabel, gbc);
+        gbc.gridx = 1;
+        formPanel.add(changePriceTextField, gbc);
+        gbc.gridx = 2;
+        formPanel.add(btnChangePrice, gbc);
+
+         btnDeleteHotel = new JButton("Delete Hotel");
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        formPanel.add(btnDeleteHotel, gbc);
+
+        ArrayList<String> datePriceList = new ArrayList<>();
+        for (int i = 1; i <= 31; i++)
+            datePriceList.add(Integer.toString(i));
+
+        ArrayList<String> datePercentList = new ArrayList<>();
+        for (int i = 50; i <= 150; i++)
+            datePercentList.add(Integer.toString(i) + "%");
+
+        JLabel dates = new JLabel("Modify Date Price:");
+        JLabel chooseDate = new JLabel("Choose Date:");
+        JLabel choosePercent = new JLabel("Choose Percent to Increase or Decrease Price:");
+        JComboBox<String> datesBox = new JComboBox<>(datePriceList.toArray(new String[0]));
+        datesBox.setSelectedItem(null);
+        JComboBox<String> datesPercentBox = new JComboBox<>(datePercentList.toArray(new String[0]));
+        datesPercentBox.setSelectedItem(null);
+         btnDatePrice = new JButton("Modify");
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        formPanel.add(dates, gbc);
+        gbc.gridy = 8;
+        formPanel.add(chooseDate, gbc);
+        gbc.gridx = 1;
+        formPanel.add(datesBox, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 9;
+        formPanel.add(choosePercent, gbc);
+        gbc.gridx = 1;
+        formPanel.add(datesPercentBox, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 10;
+        formPanel.add(btnDatePrice, gbc);
+
+        manageHotelsPanel.add(formPanel, BorderLayout.CENTER);
+    }
 
     private void initSimulateBookingPanel() {
 
@@ -351,6 +485,11 @@ public class HotelReservationSystemView extends JFrame {
         updateCenterPanel(viewHotelPanel);
     }
 
+    public void displayManageHotel() {
+        updateCenterPanel(manageHotelsPanel);
+    }
+
+
     public void displaySimulateBooking() {
         updateCenterPanel(simulateBookingPanel);
     }
@@ -369,6 +508,19 @@ public class HotelReservationSystemView extends JFrame {
         btnSimulateBooking.addActionListener(listener);
         btnBackToMainMenu.addActionListener(listener);
         btnCreateSubmit.addActionListener(listener);
+        btnViewDetails.addActionListener(listener);
+        btnCheckAvailability.addActionListener(listener);
+        btnRoomInfo.addActionListener(listener);
+        btnReservationInfo.addActionListener(listener);
+
+        btnAddRoom.addActionListener(listener);
+        btnRemoveRoom.addActionListener(listener);
+        btnChangeName.addActionListener(listener);
+        btnChangePrice.addActionListener(listener);
+        btnDeleteHotel.addActionListener(listener);
+        btnDatePrice.addActionListener(listener);
+
+        btnBook.addActionListener(listener);
     }
 
 

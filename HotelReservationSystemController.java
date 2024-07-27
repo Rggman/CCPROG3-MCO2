@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,15 +11,16 @@ public class HotelReservationSystemController implements ActionListener {
         this.view = view;
         this.model = model;
 
-        view.setMainMenuActionLister(this);
+        view.setMainMenuActionListener(this);
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
         switch (e.getActionCommand()) {
             case "Create Hotel":
-                System.out.println("Create Hotel");
+                view.displayCreateHotelForm();
                 break;
             case "View Hotel":
                 System.out.println("View Hotel");
@@ -30,10 +32,20 @@ public class HotelReservationSystemController implements ActionListener {
                 System.out.println("Book Hotel");
                 break;
             case "Back to Main":
-                System.out.println("Back to Main");
+                view.displayMainMenu();
+                break;
+            case "Submit":
+                System.out.println("Submit Button Clicked");
                 break;
         }
+
+
     }
+
+
+
+
+
 
 
 }

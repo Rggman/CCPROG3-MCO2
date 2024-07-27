@@ -23,7 +23,7 @@ public class HotelReservationSystemController implements ActionListener {
                 view.displayCreateHotelForm();
                 break;
             case "View Hotel":
-                System.out.println("View Hotel");
+                view.displayViewHotel() ;
                 break;
             case "Manage Hotel":
                 System.out.println("Manage Hotel");

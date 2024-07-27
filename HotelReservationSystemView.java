@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class HotelReservationSystemView extends JFrame {
 
@@ -15,6 +16,10 @@ public class HotelReservationSystemView extends JFrame {
     private JPanel createHotelPanel;
     private JButton btnCreateSubmit;
 
+    //For View Hottel
+    private JPanel viewHotelPanel;
+
+
     // For Simulate Booking
     private JPanel simulateBookingPanel;
     private JButton btnBook;
@@ -27,7 +32,9 @@ public class HotelReservationSystemView extends JFrame {
 
         initMainMenuPanel();
         initCreateHotelPanel();
+        initViewHotelPanel();
         initSimulateBookingPanel();
+
 
         // Initialize center panel and set main menu as the default view
         centerPanel = new JPanel(new BorderLayout());
@@ -152,6 +159,93 @@ public class HotelReservationSystemView extends JFrame {
         createHotelPanel.add(submitButtonPanel, BorderLayout.SOUTH);
     }
 
+    private void initViewHotelPanel() {
+        viewHotelPanel = new JPanel(new BorderLayout());
+        viewHotelPanel.setPreferredSize(new Dimension(550, 500));
+        viewHotelPanel.setBackground(new Color(30, 144, 255));
+        viewHotelPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        JPanel hotelSelectionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        JPanel lowLevelButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        Font labelFont = new Font("Arial", Font.PLAIN, 18);
+        Font fieldFont = new Font("Arial", Font.PLAIN, 16);
+
+
+
+        JComboBox<String> hotelComboBox = new JComboBox<>();
+        JButton viewButton = new JButton("View Details");
+
+        JLabel hotelLabel = new JLabel("Select Hotel:");
+        hotelLabel.setFont(labelFont);
+        hotelLabel.setPreferredSize(new Dimension(10, 5));
+        hotelComboBox.setFont(fieldFont);
+        hotelComboBox.setSize(new Dimension(100, 30));
+
+        // Create a panel to center the button
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setSize(new Dimension(5, 5)); // Fixed size for the panel
+        viewButton.setFont(new Font("Arial", Font.BOLD, 16));
+        viewButton.setSize(new Dimension(30, 5)); // Fixed size for the button
+        buttonPanel.add(viewButton);
+
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS)); // Use BoxLayout for vertical arrangement
+        infoPanel.setBackground(new Color(30, 144, 255));
+        infoPanel.setPreferredSize(new Dimension(400, 450));
+
+        JLabel hotelDetailsLabel = new JLabel("High-Level Information:");
+        hotelDetailsLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        infoPanel.add(hotelDetailsLabel);
+
+
+        JLabel nameLabel = new JLabel();
+        JLabel numOfRoomsLabel = new JLabel();
+        JLabel numOfReservationsLabel = new JLabel();
+        JLabel estimatedEarningsLabel = new JLabel();
+        JLabel numOfAvailableRoomsLabel = new JLabel();
+
+        nameLabel.setText("Hotel Name: ");
+        nameLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        nameLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        numOfRoomsLabel.setText("Number of Rooms: ");
+        numOfRoomsLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        numOfRoomsLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        numOfReservationsLabel.setText("Number of Reservations: ");
+        numOfReservationsLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        numOfReservationsLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        estimatedEarningsLabel.setText("Estimated Earnings: " );
+        estimatedEarningsLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        estimatedEarningsLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        numOfAvailableRoomsLabel.setText("Number of Available Rooms: ");
+        numOfAvailableRoomsLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        numOfAvailableRoomsLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+
+        // Add these labels to the infoPanel
+        infoPanel.add(nameLabel);
+        infoPanel.add(numOfRoomsLabel);
+        infoPanel.add(numOfReservationsLabel);
+        infoPanel.add(estimatedEarningsLabel);
+        infoPanel.add(numOfAvailableRoomsLabel);
+
+        JButton checkAvailabilityButton = new JButton("Check Availability");
+        JButton roomInfoButton = new JButton("Room Information");
+        JButton reservationInfoButton = new JButton("Reservation Information");
+
+        // Add buttons to the infoPanel
+        lowLevelButtonPanel.add(checkAvailabilityButton);
+        lowLevelButtonPanel.add(roomInfoButton);
+        lowLevelButtonPanel.add(reservationInfoButton);
+
+        hotelSelectionPanel.add(hotelComboBox, BorderLayout.NORTH);
+        hotelSelectionPanel.add(viewButton, BorderLayout.NORTH);
+        viewHotelPanel.add(hotelSelectionPanel, BorderLayout.NORTH);
+        viewHotelPanel.add(infoPanel, BorderLayout.CENTER);
+        viewHotelPanel.add(lowLevelButtonPanel, BorderLayout.SOUTH);
+
+
+    }
 
 
     private void initSimulateBookingPanel() {
@@ -251,6 +345,10 @@ public class HotelReservationSystemView extends JFrame {
 
     public void displayCreateHotelForm() {
         updateCenterPanel(createHotelPanel);
+    }
+
+    public void displayViewHotel() {
+        updateCenterPanel(viewHotelPanel);
     }
 
     public void displaySimulateBooking() {

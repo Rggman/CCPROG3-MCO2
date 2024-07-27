@@ -29,7 +29,7 @@ public class HotelReservationSystemController implements ActionListener {
                 System.out.println("Manage Hotel");
                 break;
             case "Book Hotel":
-                System.out.println("Book Hotel");
+                view.displaySimulateBooking();
                 break;
             case "Back to Main":
                 view.displayMainMenu();

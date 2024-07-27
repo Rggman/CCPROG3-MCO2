@@ -9,8 +9,16 @@ public class HotelReservationSystemView extends JFrame {
     private JButton btnCreateHotel, btnViewHotel, btnManageHotel, btnSimulateBooking, btnBackToMainMenu;
 
     private JPanel northPanel, westPanel, centerPanel;
-    private JPanel mainMenuPanel, createHotelPanel;
+    private JPanel mainMenuPanel;
+
+    // For Create Hotel
+    private JPanel createHotelPanel;
     private JButton btnCreateSubmit;
+
+    // For Simulate Booking
+    private JPanel simulateBookingPanel;
+    private JButton btnBook;
+
 
     public HotelReservationSystemView() {
         super("Hotel Reservation System");
@@ -19,6 +27,7 @@ public class HotelReservationSystemView extends JFrame {
 
         initMainMenuPanel();
         initCreateHotelPanel();
+        initSimulateBookingPanel();
 
         // Initialize center panel and set main menu as the default view
         centerPanel = new JPanel(new BorderLayout());
@@ -143,6 +152,88 @@ public class HotelReservationSystemView extends JFrame {
         createHotelPanel.add(submitButtonPanel, BorderLayout.SOUTH);
     }
 
+
+
+    private void initSimulateBookingPanel() {
+
+        simulateBookingPanel = new JPanel(new GridLayout(7, 3, 10, 50));  // Adjusted to 7 rows to accommodate all components
+        simulateBookingPanel.setBorder(new EmptyBorder(10, 25, 10, 25));
+        simulateBookingPanel.setPreferredSize(new Dimension(550, 500));
+        simulateBookingPanel.setBackground(new Color(30, 144, 255));
+
+        Font labelFont = new Font("Arial", Font.PLAIN, 18);
+        Font fieldFont = new Font("Arial", Font.PLAIN, 16);
+
+        JComboBox<String> hotelComboBox = new JComboBox<>();
+        JTextField customerNameField = new JTextField();
+        JComboBox<String> roomTypeComboBox = new JComboBox<>();
+        JComboBox checkInDateBox = new JComboBox();
+        JComboBox checkOutDateBox = new JComboBox();
+        JTextField couponCodeField = new JTextField();
+
+        JLabel hotelLabel = new JLabel("Select Hotel:");
+        hotelLabel.setFont(labelFont);
+        hotelComboBox.setFont(fieldFont);
+        hotelComboBox.setPreferredSize(new Dimension(200, 30));
+
+        JLabel customerNameLabel = new JLabel("Customer Name:");
+        customerNameLabel.setFont(labelFont);
+        customerNameField.setFont(fieldFont);
+        customerNameField.setPreferredSize(new Dimension(200, 30));
+
+        JLabel roomTypeLabel = new JLabel("Select Room Type:");
+        roomTypeLabel.setFont(labelFont);
+        roomTypeComboBox.setFont(fieldFont);
+        roomTypeComboBox.setPreferredSize(new Dimension(200, 30));
+
+        JLabel checkInDateLabel = new JLabel("Choose Check-in Date:");
+        checkInDateLabel.setFont(labelFont);
+        checkInDateBox.setFont(fieldFont);
+        checkInDateBox.setPreferredSize(new Dimension(200, 30));
+
+        JLabel checkOutDateLabel = new JLabel("Choose Check-out Date:");
+        checkOutDateLabel.setFont(labelFont);
+        checkOutDateBox.setFont(fieldFont);
+        checkOutDateBox.setPreferredSize(new Dimension(200, 30));
+
+        JLabel couponCodeLabel = new JLabel("Coupon Code (None = 0):");
+        couponCodeLabel.setFont(labelFont);
+        couponCodeField.setFont(fieldFont);
+        couponCodeField.setPreferredSize(new Dimension(200, 30));
+
+
+
+        btnBook = new JButton("Book");
+        btnBook.setBackground(Color.GRAY);
+        btnBook.setForeground(Color.WHITE);
+        btnBook.setFocusPainted(false);
+        btnBook.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        btnBook.setFont(labelFont);
+        btnBook.setSize(new Dimension(200, 60));
+
+        // Add components vertically
+        simulateBookingPanel.add(hotelLabel);
+        simulateBookingPanel.add(hotelComboBox);
+
+        simulateBookingPanel.add(customerNameLabel);
+        simulateBookingPanel.add(customerNameField);
+
+        simulateBookingPanel.add(roomTypeLabel);
+        simulateBookingPanel.add(roomTypeComboBox);
+
+        simulateBookingPanel.add(checkInDateLabel);
+        simulateBookingPanel.add(checkInDateBox);
+
+        simulateBookingPanel.add(checkOutDateLabel);
+        simulateBookingPanel.add(checkOutDateBox);
+
+        simulateBookingPanel.add(couponCodeLabel);
+        simulateBookingPanel.add(couponCodeField);
+
+        simulateBookingPanel.add(new JLabel()); // Empty cell
+        simulateBookingPanel.add(btnBook);
+
+    }
     private JButton createMenuButton(String btnLabel) {
         JButton button = new JButton(btnLabel);
         button.setPreferredSize(new Dimension(150, 50));
@@ -160,6 +251,10 @@ public class HotelReservationSystemView extends JFrame {
 
     public void displayCreateHotelForm() {
         updateCenterPanel(createHotelPanel);
+    }
+
+    public void displaySimulateBooking() {
+        updateCenterPanel(simulateBookingPanel);
     }
 
     public void updateCenterPanel(JPanel panel) {

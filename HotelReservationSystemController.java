@@ -263,29 +263,143 @@ public class HotelReservationSystemController {
     class BtnSimulateBookingListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (model.getHotels().isEmpty()) {
+                view.displayMessage("No available hotels");
+                return;
+            }
             view.displaySimulateBooking();
+
+            view.getHotelComboBox2().removeAllItems();
+            // Used to populate the hotel combo box with available hotels
+            for (Hotel hotel : model.getHotels())
+                view.getHotelComboBox2().addItem(hotel.getHotelName());
+            view.getHotelComboBox2().setSelectedItem(null);
+            view.getRoomTypeBox().setSelectedItem(null);
+
+            view.populateRoomTypeBox(new PopulateRoomTypeBox());
+            view.populateCheckInDateBox(new PopulateCheckInDateBox());
+            view.populateCheckOutDateBox(new PopulateCheckOutDateBox());
+            view.addBtnBookListener(new BtnBookListener());
         }
     }
 
-        class PopulateTypeOfRoomComboBox implements ItemListener {
+        class PopulateRoomTypeBox implements ItemListener {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    String selectedHotelName = (String)view.getHotelComboBox().getSelectedItem();
+                    String selectedHotelName = (String) view.getHotelComboBox2().getSelectedItem();
                     Hotel hotel = model.getHotel(selectedHotelName);
-                    view.getTypeOfRoomBox().removeAllItems();
+                    view.getRoomTypeBox().removeAllItems();
 
                     if (hotel.getNumOfStandardRooms() > 0) {
-                        view.getTypeOfRoomBox().addItem("Standard");
+                        view.getRoomTypeBox().addItem("Standard");
                     }
                     if (hotel.getNumOfDeluxeRooms() > 0) {
-                        view.getTypeOfRoomBox().addItem("Deluxe");
+                        view.getRoomTypeBox().addItem("Deluxe");
                     }
                     if (hotel.getNumOfExecutiveRooms() > 0) {
-                        view.getTypeOfRoomBox().addItem("Executive");
+                        view.getRoomTypeBox().addItem("Executive");
                     }
+                    view.getRoomTypeBox().setSelectedItem(null);
                 }
-
             }
         }
+
+        class PopulateCheckInDateBox implements ItemListener {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    String selectedHotelName = (String) view.getHotelComboBox2().getSelectedItem();
+                    Hotel hotel = model.getHotel(selectedHotelName);
+                    boolean[] isAvailable = new boolean[31];
+                    view.getCheckInDateBox().removeAllItems();
+
+                    for (Room room : hotel.getRooms()) {
+                        for (int i = 0; i < 31; i++) {
+                            if (room.getRoomType().equals((String) view.getRoomTypeBox().getSelectedItem()) && !room.getIsReserved(i + 1)) {
+                                isAvailable[i] = true;
+                            }
+                        }
+                    }
+                    for (int i = 0; i < isAvailable.length - 1; i++) {
+                        if (isAvailable[i]) {
+                            view.getCheckInDateBox().addItem(Integer.toString(i + 1));
+                        }
+                    }
+                    view.getCheckInDateBox().setSelectedItem(null);
+                }
+            }
+        }
+
+        class PopulateCheckOutDateBox implements ItemListener {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    String selectedHotelName = (String)view.getHotelComboBox2().getSelectedItem();
+                    Hotel hotel = model.getHotel(selectedHotelName);
+                    view.getCheckOutDateBox().removeAllItems();
+                    boolean[] isAvailable = new boolean[31];
+
+                    for (Room room : hotel.getRooms()) {
+                        for (int i = 0; i < 31; i++) {
+                            if (room.getRoomType().equals((String) view.getRoomTypeBox().getSelectedItem()) && !room.getIsReserved(i + 1)) {
+                                isAvailable[i] = true;
+                            }
+                        }
+                    }
+                    for (int i = Integer.parseInt(
+                        (String) view.getCheckInDateBox().getSelectedItem()); i < isAvailable.length; i++) {
+                        if (isAvailable[i]) {
+                            view.getCheckOutDateBox().addItem(Integer.toString(i + 1));
+                        }
+                    }
+                    view.getCheckOutDateBox().setSelectedItem(null);
+                }
+            }
+        }
+
+        class BtnBookListener implements ActionListener {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = (String) view.getHotelComboBox2().getSelectedItem();
+                Hotel hotel = model.getHotel(name);
+                String customerName = view.getCustomerNameFieldInput();
+                int checkInDate = Integer.parseInt((String) view.getCheckInDateBox().getSelectedItem());
+                int checkOutDate = Integer.parseInt((String) view.getCheckOutDateBox().getSelectedItem());
+                String roomType = (String) view.getRoomTypeBox().getSelectedItem();
+                String couponCode = view.getCouponCodeFieldInput();
+
+                if (!couponCode.equals("I_WORK_HERE") && !couponCode.equals("STAY4_GET1") && !couponCode.equals("PAYDAY")
+                    && !couponCode.equals("0")) {
+                view.displayMessage("Invalid coupon code!");
+                return;
+                } 
+                else if (couponCode.equals("STAY4_GET1") && checkOutDate - checkInDate < 5) {
+                    JOptionPane.showMessageDialog(null,
+                            "Coupon code (STAY4_GET1) could only be used for reservations with 5 days or more!");
+                    return;
+                } 
+                else if (couponCode.equals("PAYDAY")) {
+                    boolean validPayday = false;
+                    for (int i = checkInDate; i < checkOutDate; i++) {
+                        if ((i == 15 && checkOutDate != 15) || (i == 30 && checkOutDate != 30)) {
+                            validPayday = true;
+                            break;
+                        }
+                    }
+                    if (!validPayday) {
+                        JOptionPane.showMessageDialog(null,
+                                "Coupon code (PAYDAY) could only be used for reservations covering 15 or 30 but not as checkout date!");
+                        return;
+                    }
+                }
+        
+                model.addReservation(name, customerName, checkInDate, checkOutDate, roomType, couponCode);
+                CustomerReservation reservation = hotel.getHotelReservation(customerName);
+                view.displayMessage("Successfully made reservation for: \n" + "Customer name : " + reservation.getCustomerName() + "\n"
+                + "Check-in date : " + reservation.getCheckInDate() + "\n" + "Check-out date : " + reservation.getCheckOutDate() + "\n"
+                + "Room Type : " + reservation.getRoomInfo().getRoomType() + "\n" + "Total Price : " + reservation.getTotalPrice());
+            }
+        }
+
 }

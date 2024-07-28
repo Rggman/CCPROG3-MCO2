@@ -49,7 +49,14 @@ public class HotelReservationSystemView extends JFrame {
 
     // For Simulate Booking
     private JPanel simulateBookingPanel;
-    private JButton btnBook;
+    private JButton btnBook = new JButton("Book");
+    private JTextField customerNameField = new JTextField();
+    private JComboBox<String> hotelComboBox2 = new JComboBox<>();
+    private JComboBox<String> roomTypeBox = new JComboBox<>();
+    private JComboBox<String> checkInDateBox = new JComboBox<>();
+    private JComboBox<String> checkOutDateBox = new JComboBox<>();
+    private JTextField couponCodeField = new JTextField();
+    private JPanel receiptPanel;
 
 
     public HotelReservationSystemView() {
@@ -470,17 +477,10 @@ public class HotelReservationSystemView extends JFrame {
         Font labelFont = new Font("Arial", Font.PLAIN, 18);
         Font fieldFont = new Font("Arial", Font.PLAIN, 16);
 
-        JComboBox<String> hotelComboBox = new JComboBox<>();
-        JTextField customerNameField = new JTextField();
-        JComboBox<String> roomTypeComboBox = new JComboBox<>();
-        JComboBox checkInDateBox = new JComboBox();
-        JComboBox checkOutDateBox = new JComboBox();
-        JTextField couponCodeField = new JTextField();
-
         JLabel hotelLabel = new JLabel("Select Hotel:");
         hotelLabel.setFont(labelFont);
-        hotelComboBox.setFont(fieldFont);
-        hotelComboBox.setPreferredSize(new Dimension(200, 30));
+        hotelComboBox2.setFont(fieldFont);
+        hotelComboBox2.setPreferredSize(new Dimension(200, 30));
 
         JLabel customerNameLabel = new JLabel("Customer Name:");
         customerNameLabel.setFont(labelFont);
@@ -489,8 +489,8 @@ public class HotelReservationSystemView extends JFrame {
 
         JLabel roomTypeLabel = new JLabel("Select Room Type:");
         roomTypeLabel.setFont(labelFont);
-        roomTypeComboBox.setFont(fieldFont);
-        roomTypeComboBox.setPreferredSize(new Dimension(200, 30));
+        roomTypeBox.setFont(fieldFont);
+        roomTypeBox.setPreferredSize(new Dimension(200, 30));
 
         JLabel checkInDateLabel = new JLabel("Choose Check-in Date:");
         checkInDateLabel.setFont(labelFont);
@@ -502,14 +502,11 @@ public class HotelReservationSystemView extends JFrame {
         checkOutDateBox.setFont(fieldFont);
         checkOutDateBox.setPreferredSize(new Dimension(200, 30));
 
-        JLabel couponCodeLabel = new JLabel("Coupon Code (None = 0):");
+        JLabel couponCodeLabel = new JLabel("Coupon Code (0 if none):");
         couponCodeLabel.setFont(labelFont);
         couponCodeField.setFont(fieldFont);
         couponCodeField.setPreferredSize(new Dimension(200, 30));
 
-
-
-        btnBook = new JButton("Book");
         btnBook.setBackground(Color.GRAY);
         btnBook.setForeground(Color.WHITE);
         btnBook.setFocusPainted(false);
@@ -519,13 +516,13 @@ public class HotelReservationSystemView extends JFrame {
 
         // Add components vertically
         simulateBookingPanel.add(hotelLabel);
-        simulateBookingPanel.add(hotelComboBox);
+        simulateBookingPanel.add(hotelComboBox2);
 
         simulateBookingPanel.add(customerNameLabel);
         simulateBookingPanel.add(customerNameField);
 
         simulateBookingPanel.add(roomTypeLabel);
-        simulateBookingPanel.add(roomTypeComboBox);
+        simulateBookingPanel.add(roomTypeBox);
 
         simulateBookingPanel.add(checkInDateLabel);
         simulateBookingPanel.add(checkInDateBox);
@@ -538,8 +535,8 @@ public class HotelReservationSystemView extends JFrame {
 
         simulateBookingPanel.add(new JLabel()); // Empty cell
         simulateBookingPanel.add(btnBook);
-
     }
+
     private JButton setButtonElements(JButton button) {
         button.setPreferredSize(new Dimension(150, 50));
         button.setFont(new Font("Arial", Font.BOLD, 16));
@@ -548,6 +545,11 @@ public class HotelReservationSystemView extends JFrame {
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
         return button;
+    }
+
+    public JLabel setJLabel(String info) {
+        JLabel jlabel = new JLabel(info);
+        return jlabel;
     }
 
     public void displayMainMenu() {
@@ -649,9 +651,21 @@ public class HotelReservationSystemView extends JFrame {
     public void addBtnSimulateBookingListener(ActionListener listener) {
         btnSimulateBooking.addActionListener(listener);
     }
-        // Changes available choices for typeOfRoomBox when state of hotelComboBox is changed
-        public void populateTypeOfRoomComboBox(ItemListener listener) {
-            hotelComboBox.addItemListener(listener);
+        // Changes available choices for typeOfRoomBox when state of hotelComboBox2 is changed
+        public void populateRoomTypeBox(ItemListener listener) {
+            hotelComboBox2.addItemListener(listener);
+        }
+
+        public void populateCheckInDateBox(ItemListener listener) {
+            roomTypeBox.addItemListener(listener);
+        }
+
+        public void populateCheckOutDateBox(ItemListener listener) {
+            checkInDateBox.addItemListener(listener);
+        }
+
+        public void addBtnBookListener(ActionListener listener) {
+            btnBook.addActionListener(listener);
         }
 
     public void setMainMenuActionListener(ActionListener listener) {
@@ -742,5 +756,29 @@ public class HotelReservationSystemView extends JFrame {
 
     public JComboBox<String> getReservationsBox() {
         return reservationsBox;
+    }
+
+    public JComboBox<String> getHotelComboBox2() {
+        return hotelComboBox2;
+    }
+
+    public JComboBox<String> getRoomTypeBox() {
+        return roomTypeBox;
+    }
+
+    public JComboBox<String> getCheckInDateBox() {
+        return checkInDateBox;
+    }
+
+    public JComboBox<String> getCheckOutDateBox() {
+        return checkOutDateBox;
+    }
+
+    public String getCustomerNameFieldInput() {
+        return customerNameField.getText();
+    }
+
+    public String getCouponCodeFieldInput() {
+        return couponCodeField.getText();
     }
 }

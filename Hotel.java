@@ -86,6 +86,14 @@ public class Hotel {
         return reservations;
     }
 
+    public CustomerReservation getHotelReservation(String name) {
+        for (CustomerReservation r : reservations) {
+            if (r.getCustomerName().equals(name))
+                return r;
+        }
+        return null;
+    }
+
     /**
      * Counts the number of currently unreserved rooms in the hotel.
      *

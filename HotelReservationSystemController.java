@@ -18,6 +18,11 @@ public class HotelReservationSystemController {
         this.view.addBtnViewHotelListener(new BtnViewHotelListener());
         this.view.addBtnManageHotelListener(new BtnManageHotelListener());
         this.view.addBtnSimulateBookingListener(new BtnSimulateBookingListener());
+
+        this.view.addBtnLowLevelInfoListener(new BtnLowLevelInfoListener());
+        this.view.addBtnBackToViewListener(new BtnBackToViewListener());
+
+
     }
 
     // Menu button for create hotel
@@ -101,6 +106,7 @@ public class HotelReservationSystemController {
         }
     }
 
+<<<<<<< HEAD
         // Used to populate add rooms box and remove rooms box
         class PopulateRoomsBox implements ItemListener {
             @Override
@@ -112,6 +118,15 @@ public class HotelReservationSystemController {
                     view.getRemoveRoomBox().removeAllItems();
                     for (int i = 1; i <= 50 - hotel.getHotelNumOfRooms(); i ++)
                         view.getAddRoomBox().addItem(Integer.toString(i));
+=======
+    // Menu button for low level info
+    class BtnLowLevelInfoListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            view.displayLowLevelInfo();
+        }
+    }
+>>>>>>> 9648b12570367d9af35e83e65b47c14c83513f32
 
                     for (int i = 1; i <= hotel.getHotelNumOfRooms(); i++)
                         view.getRemoveRoomBox().addItem(Integer.toString(i));
@@ -210,6 +225,14 @@ public class HotelReservationSystemController {
             }
         }
 
+    // Menu button for back to view
+    class BtnBackToViewListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            view.displayViewHotel();
+        }
+    }
+
     // Menu button for simulate booking
     class BtnSimulateBookingListener implements ActionListener {
         @Override
@@ -218,6 +241,7 @@ public class HotelReservationSystemController {
         }
     }
 
+<<<<<<< HEAD
         class PopulateTypeOfRoomComboBox implements ItemListener {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -239,4 +263,8 @@ public class HotelReservationSystemController {
 
             }
         }
+=======
+
+
+>>>>>>> 9648b12570367d9af35e83e65b47c14c83513f32
 }

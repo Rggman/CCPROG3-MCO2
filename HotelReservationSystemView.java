@@ -548,23 +548,24 @@ public class HotelReservationSystemView extends JFrame {
         return hotelNameField.getText();
     }
 
-    public int getNumberOfStandardRoomsInput() {
-        return Integer.parseInt(numberOfStandardRoomsField.getText());
+    public String getNumberOfStandardRoomsInput() {
+        return numberOfStandardRoomsField.getText();
     }
 
-    public int getNumberOfDeluxeRoomsInput() {
-        return Integer.parseInt(numberOfDeluxeRoomsField.getText());
+    public String getNumberOfDeluxeRoomsInput() {
+        return numberOfDeluxeRoomsField.getText();
     }
 
-    public int getNumberOfExecutiveRoomsInput() {
-        return Integer.parseInt(numberOfExecutiveRoomsField.getText());
+    public String getNumberOfExecutiveRoomsInput() {
+        return numberOfExecutiveRoomsField.getText();
     }
 
-    public double getBasePriceInput() {
-        return Double.parseDouble(basePriceField.getText());
+    public String getBasePriceInput() {
+        return basePriceField.getText();
     }
 
     public void displayMessage(String message){
         JOptionPane.showMessageDialog(this, message);
     }
+
 }

@@ -29,31 +29,36 @@ public class HotelReservationSystemController {
         class BtnCreateSubmitListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String name = view.getHotelNameInput();
-                int numOfStandardRooms = view.getNumberOfStandardRoomsInput();
-                int numOfDeluxeRooms = view.getNumberOfDeluxeRoomsInput();
-                int numOfExecutiveRooms = view.getNumberOfExecutiveRoomsInput();
-                double basePrice = view.getBasePriceInput();
+                try {
+                    String name = view.getHotelNameInput();
+                    int numOfStandardRooms = Integer.parseInt(view.getNumberOfStandardRoomsInput());
+                    int numOfDeluxeRooms = Integer.parseInt(view.getNumberOfDeluxeRoomsInput());
+                    int numOfExecutiveRooms = Integer.parseInt(view.getNumberOfExecutiveRoomsInput());
+                    double basePrice = Double.parseDouble(view.getBasePriceInput());
 
-                if (!model.isHotelNameUnique(name)) {
-                    view.displayMessage("Hotel " + name + " already exists");
+                    if (!model.isHotelNameUnique(name)) {
+                        view.displayMessage("Hotel " + name + " already exists");
+                        return;
+                    }
+                    if (numOfStandardRooms > 50 || numOfDeluxeRooms > 50 || numOfExecutiveRooms > 50 || 
+                    (numOfStandardRooms + numOfDeluxeRooms + numOfExecutiveRooms) > 50) {
+                        view.displayMessage("Maximuim number of total rooms is 50");
+                        return;
+                    }
+                    if (basePrice < 100) {
+                        view.displayMessage("Base price of hotel should be greater than 100");
+                        return;
+                    }
+
+                    model.createHotel(name, basePrice, numOfStandardRooms, numOfDeluxeRooms, numOfExecutiveRooms);
+                    view.displayMessage("Hotel " + name + " has been successfully created with a \nbase price of " + basePrice + " ,\n" 
+                    + numOfStandardRooms + " standard rooms, \n" + numOfDeluxeRooms + " deluxe rooms, and \n" + numOfExecutiveRooms +
+                    " executive rooms");
+                }
+                catch (NumberFormatException ex) {
+                    view.displayMessage("Please enter valid numbers for rooms and prices");
                     return;
                 }
-                if (numOfStandardRooms > 50 || numOfDeluxeRooms > 50 || numOfExecutiveRooms > 50 || 
-                (numOfStandardRooms + numOfDeluxeRooms + numOfExecutiveRooms) > 50) {
-                    view.displayMessage("Maximuim number of total rooms is 50");
-                    return;
-                }
-                if (basePrice < 100) {
-                    view.displayMessage("Base price of hotel should be greater than 100");
-                    return;
-                }
-
-                model.createHotel(name, basePrice, numOfStandardRooms, numOfDeluxeRooms, numOfExecutiveRooms);
-                view.displayMessage("Hotel " + name + " has been successfully created with a \nbase price of " + basePrice + " ,\n" 
-                + numOfStandardRooms + " standard rooms, \n" + numOfDeluxeRooms + " deluxe rooms, and \n" + numOfExecutiveRooms +
-                " executive rooms");
-
             }
         }
 
@@ -74,7 +79,7 @@ public class HotelReservationSystemController {
         }
     }
 
-    
+
 
     // Menu button for simulate booking
     class BtnSimulateBookingListener implements ActionListener {

@@ -35,14 +35,17 @@ public class HotelReservationSystemView extends JFrame {
     private JButton btnChangePrice = new JButton("Change Price");
     private JButton btnDeleteHotel = new JButton("Delete");
     private JButton btnDatePrice = new JButton("Modify");
-    JComboBox<String> hotelComboBox = new JComboBox<>();
-    JComboBox<String> typeOfRoomBox = new JComboBox<>();
-    JComboBox<String> addRoomsBox = new JComboBox<>();
-    JComboBox<String> removeRoomsBox = new JComboBox<>();
-    JTextField changeNameTextField = new JTextField(15);
-    JTextField changePriceTextField = new JTextField(15);
-    JComboBox<String> datesBox = new JComboBox<>();
-    JComboBox<String> datesPercentBox = new JComboBox<>();
+    private JComboBox<String> hotelComboBox = new JComboBox<>();
+    private JComboBox<String> typeOfRoomBox = new JComboBox<>();
+    private JComboBox<String> addRoomsBox = new JComboBox<>();
+    private JComboBox<String> removeRoomsBox = new JComboBox<>();
+    private JComboBox<String> reservationsBox = new JComboBox<>();
+    private JButton btnRemoveReservation = new JButton("Remove");
+    private JButton btnRemoveAllReservation = new JButton("Remove All");
+    private JTextField changeNameTextField = new JTextField(15);
+    private JTextField changePriceTextField = new JTextField(15);
+    private JComboBox<String> datesBox = new JComboBox<>();
+    private JComboBox<String> datesPercentBox = new JComboBox<>();
 
     // For Simulate Booking
     private JPanel simulateBookingPanel;
@@ -417,6 +420,14 @@ public class HotelReservationSystemView extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 6;
+        formPanel.add(reservationsBox, gbc);
+        gbc.gridx = 1;
+        formPanel.add(btnRemoveReservation, gbc);
+        gbc.gridx = 2;
+        formPanel.add(btnRemoveAllReservation, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 7;
         formPanel.add(btnDeleteHotel, gbc);
 
         for (int i = 1; i <= 31; i++)
@@ -431,21 +442,19 @@ public class HotelReservationSystemView extends JFrame {
         JLabel dates = new JLabel("Modify Date Price:");
         JLabel chooseDate = new JLabel("Choose Date:");
         JLabel choosePercent = new JLabel("Choose Percent to Increase or Decrease Price:");
-        btnDatePrice = new JButton("Modify");
         gbc.gridx = 0;
-        gbc.gridy = 7;
-        formPanel.add(dates, gbc);
         gbc.gridy = 8;
+        formPanel.add(dates, gbc);
+        gbc.gridy = 9;
         formPanel.add(chooseDate, gbc);
         gbc.gridx = 1;
         formPanel.add(datesBox, gbc);
         gbc.gridx = 0;
-        gbc.gridy = 9;
+        gbc.gridy = 10;
         formPanel.add(choosePercent, gbc);
         gbc.gridx = 1;
         formPanel.add(datesPercentBox, gbc);
-        gbc.gridx = 0;
-        gbc.gridy = 10;
+        gbc.gridx = 2;
         formPanel.add(btnDatePrice, gbc);
 
         manageHotelsPanel.add(formPanel, BorderLayout.CENTER);
@@ -601,6 +610,18 @@ public class HotelReservationSystemView extends JFrame {
             hotelComboBox.addItemListener(listener);
         }
 
+        public void populateReservationsComboBox(ItemListener listener) {
+            hotelComboBox.addItemListener(listener);
+        }
+
+        public void addBtnRemoveReservationListener(ActionListener listener) {
+            btnRemoveReservation.addActionListener(listener);
+        }
+
+        public void addBtnRemoveAllReservationListener(ActionListener listener) {
+            btnRemoveAllReservation.addActionListener(listener);
+        }
+
         public void addBtnAddRoomsListener(ActionListener listener) {
             btnAddRoom.addActionListener(listener);
         }
@@ -676,7 +697,7 @@ public class HotelReservationSystemView extends JFrame {
     }
 
     public void displayMessage(String message){
-        JOptionPane.showMessageDialog(this, message);
+        JOptionPane.showMessageDialog(null, message);
     }
 
     public void clearCreateHotelForm() {
@@ -717,5 +738,9 @@ public class HotelReservationSystemView extends JFrame {
 
     public JComboBox<String> getDatesPercentBox() {
         return datesPercentBox;
+    }
+
+    public JComboBox<String> getReservationsBox() {
+        return reservationsBox;
     }
 }

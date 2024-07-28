@@ -100,6 +100,9 @@ public class HotelReservationSystemController {
             view.addBtnRemoveRoomsListener(new BtnAddRoomsListener());
             view.addBtnChangeNameListener(new BtnChangeNameListener());
             view.addBtnChangePriceListener(new BtnChangePriceListener());
+            view.populateReservationsComboBox(new PopulateReservationsBox());
+            view.addBtnRemoveReservationListener(new BtnRemoveReservationListener());
+            view.addBtnRemoveAllReservationListener(new BtnRemoveAllReservationListener());
             view.addBtnDeleteListener(new BtnDeleteListener());
             view.addBtnDatePriceListener(new BtnDatePriceListener());
         }
@@ -122,6 +125,20 @@ public class HotelReservationSystemController {
 
                     view.getAddRoomBox().setSelectedItem(null);
                     view.getRemoveRoomBox().setSelectedItem(null);
+                }
+            }
+        }
+
+        class PopulateReservationsBox implements ItemListener {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    String name = (String) view.getHotelComboBox().getSelectedItem();
+                    Hotel hotel = model.getHotel(name);
+                    for (CustomerReservation r : hotel.getHotelReservations()) {
+                        view.getReservationsBox().addItem(r.getCustomerName());
+                    }
+                    view.getReservationsBox().setSelectedItem(null);
                 }
             }
         }
@@ -211,6 +228,26 @@ public class HotelReservationSystemController {
                 }
                 view.displayMessage(
                         "Date " + date + " price has been changed to " + (String) view.getDatesPercentBox().getSelectedItem());
+            }
+        }
+
+        class BtnRemoveReservationListener implements ActionListener {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = (String) view.getHotelComboBox().getSelectedItem();
+                Hotel hotel = model.getHotel(name);
+                hotel.removeReservation((String) view.getReservationsBox().getSelectedItem());
+                view.displayMessage("Reservation for " + (String) view.getReservationsBox().getSelectedItem() + "successfully removed");
+            }
+        }
+
+        class BtnRemoveAllReservationListener implements ActionListener {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = (String)view.getHotelComboBox().getSelectedItem();
+                Hotel hotel = model.getHotel(name);
+                hotel.clearReservations();
+                view.displayMessage("All reservations for " + name + " have been removed");
             }
         }
 

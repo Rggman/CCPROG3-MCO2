@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * This class represents a reservation made by a customer for a specific room,
  * with details such as customer name, check-in and check-out dates, room
@@ -6,11 +8,14 @@
  */
 public class CustomerReservation {
 
+    private Hotel hotel;
     private String customerName;
     private int checkInDate;
     private int checkOutDate;
     private Room roomInfo;
     private double totalPrice;
+    private String couponCode;
+    private float[] datePercent;
 
     /**
      * Constructs a CustomerReservation object with the provided details.
@@ -22,14 +27,34 @@ public class CustomerReservation {
      *                     (1 to 31).
      * @param roomInfo     The Room object containing details of the reserved room.
      */
-    public CustomerReservation(String customerName, int checkInDate, int checkOutDate, Room roomInfo) {
+    public CustomerReservation(String customerName, int checkInDate, int checkOutDate, Room roomInfo,
+            String couponCode, Hotel hotel) {
         this.customerName = customerName;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.roomInfo = roomInfo;
+        this.couponCode = couponCode;
+        this.datePercent = new float[31];
 
-        // Calculate total price based on room price and duration of stay
-        this.totalPrice = roomInfo.getPrice() * (checkOutDate - checkInDate);
+        for (int i = 0; i < 31; i++) {
+            this.datePercent[i] = hotel.getPercent(i + 1);
+        }
+    }
+
+    public double calculateTotalPrice() {
+        double calculatedTotalPrice = 0;
+        for(int i = checkInDate; i < checkOutDate; i++) {
+            calculatedTotalPrice += roomInfo.getPrice() * datePercent[i - 1];
+        }
+
+        switch (couponCode) {
+            case "I_WORK_HERE" -> calculatedTotalPrice= calculatedTotalPrice * 0.9;
+            case "STAY4_GET1" -> calculatedTotalPrice = calculatedTotalPrice - roomInfo.getPrice();
+            case "PAYDAY" -> calculatedTotalPrice = calculatedTotalPrice * 0.93;
+            case null, default -> calculatedTotalPrice = calculatedTotalPrice;
+        }
+        this.totalPrice = calculatedTotalPrice;
+        return totalPrice;
     }
 
     /**
@@ -68,13 +93,12 @@ public class CustomerReservation {
         return roomInfo;
     }
 
-    /**
-     * Retrieves the total price of the reservation.
-     *
-     * @return The total price calculated based on the duration of stay and room
-     *         price.
-     */
     public double getTotalPrice() {
+        totalPrice = calculateTotalPrice();
         return totalPrice;
+    }
+
+    public void setDatePercent(int date, float percent) {
+        this.datePercent[date - 1] = percent;
     }
 }

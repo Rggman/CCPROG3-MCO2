@@ -3,9 +3,10 @@
  * "price".
  * It also provides functionality to check and manage reservations for the room.
  */
-public class Room {
+public abstract class Room {
 
     private int number;
+    private double basePrice;
     private double price;
     private boolean[] isReserved;
 
@@ -17,13 +18,12 @@ public class Room {
      */
     public Room(int number, double price) {
         this.number = number;
+        this.basePrice = price;
         this.price = price;
         this.isReserved = new boolean[31]; // Assuming a maximum of 31 days in a month
 
-        // Initialize all days as not reserved
-        for (int i = 0; i < 31; i++) {
-            this.isReserved[i] = false;
-        }
+        for (int i = 0; i < 31; i++)
+            isReserved[i] = false;
     }
 
     /**
@@ -35,14 +35,17 @@ public class Room {
         return this.number;
     }
 
+    public double getBasePrice() {
+        return this.basePrice;
+    }
     /**
      * Retrieves the price per day of this Room instance.
      *
      * @return The price per day of staying in this room.
      */
-    public double getPrice() {
-        return this.price;
-    }
+    public abstract double getPrice();
+
+
 
     /**
      * Checks if the room is reserved on a specific date.
@@ -69,6 +72,9 @@ public class Room {
         return count;
     }
 
+    public void setNumber(int number) {
+        this.number = number;
+    }
     /**
      * Sets the reservation status of the room for a range of dates.
      *
@@ -80,7 +86,7 @@ public class Room {
      *                     ///////////////////////////////////////////////////////////////////
      */
     public void setIsReserved(int checkInDate, int checkOutDate, boolean reserve) {
-        for (int i = checkInDate; i <= checkOutDate; i++) {
+        for (int i = checkInDate; i < checkOutDate; i++) {
             this.isReserved[i - 1] = reserve;
         }
     }
@@ -90,7 +96,8 @@ public class Room {
      *
      * @param price The new price per day for this room.
      */
-    public void setPrice(double price) {
-        this.price = price;
-    }
+    public abstract void setPrice(double price);
+
+    public abstract String getRoomType();
 }
+

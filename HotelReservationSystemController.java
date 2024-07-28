@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class HotelReservationSystemController implements ActionListener {
+public class HotelReservationSystemController {
 
     private HotelReservationSystemView view;
     private HotelReservationSystemModel model;
@@ -11,75 +11,77 @@ public class HotelReservationSystemController implements ActionListener {
         this.view = view;
         this.model = model;
 
-        view.setMainMenuActionListener(this);
+        this.view.addBtnCreateHotelListener(new BtnCreateHotelListener());
+        this.view.addBtnViewHotelListener(new BtnViewHotelListener());
+        this.view.addBtnManageHotelListener(new BtnManageHotelListener());
+        this.view.addBtnSimulateBookingListener(new BtnSimulateBookingListener());
     }
 
+    // Menu button for create hotel
+    class BtnCreateHotelListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            view.displayCreateHotelForm();
+            view.addBtnCreateSubmitListener(new BtnCreateSubmitListener());
+        }
+    }
+        // Create hotel button for submit
+        class BtnCreateSubmitListener implements ActionListener {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = view.getHotelNameInput();
+                int numOfStandardRooms = view.getNumberOfStandardRoomsInput();
+                int numOfDeluxeRooms = view.getNumberOfDeluxeRoomsInput();
+                int numOfExecutiveRooms = view.getNumberOfExecutiveRoomsInput();
+                double basePrice = view.getBasePriceInput();
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+                if (!model.isHotelNameUnique(name)) {
+                    view.displayMessage("Hotel " + name + " already exists");
+                    return;
+                }
+                if (numOfStandardRooms > 50 || numOfDeluxeRooms > 50 || numOfExecutiveRooms > 50 || 
+                (numOfStandardRooms + numOfDeluxeRooms + numOfExecutiveRooms) > 50) {
+                    view.displayMessage("Maximuim number of total rooms is 50");
+                    return;
+                }
+                if (basePrice < 100) {
+                    view.displayMessage("Base price of hotel should be greater than 100");
+                    return;
+                }
 
-        switch (e.getActionCommand()) {
-            case "Create Hotel":
-                view.displayCreateHotelForm();
-                break;
-            case "View Hotel":
-                view.displayViewHotel() ;
-                break;
-            case "Manage Hotel":
-                view.displayManageHotel();
-                break;
-            case "Book Hotel":
-                view.displaySimulateBooking();
-                break;
-            case "Back to Main":
-                view.displayMainMenu();
-                break;
-            case "Submit":
-                System.out.println("Submit Button Clicked");
-                break;
-            case "View Details":
-                System.out.println("View Details Clicked");
-                break;
-            case "Check Availability":
-                System.out.println("Check Availability Clicked");
-                break;
-            case "Room Information":
-                System.out.println("Room Info Clicked");
-                break;
-            case "Reservation Information":
-                System.out.println("Reservation Info Clicked");
-                break;
-            case "Add":
-                System.out.println("Add Button Clicked");
-                break;
-            case "Remove":
-                System.out.println("Remove Button Clicked");
-                break;
-            case "Change Hotel Name":
-                System.out.println("Change Hotel Name Clicked");
-                break;
-            case "Change Price":
-                System.out.println("Change Price Clicked");
-                break;
-            case "Delete Hotel":
-                System.out.println("Delete Hotel Clicked");
-                break;
-            case "Modify":
-                System.out.println("Price Modifier Clicked");
-                break;
-            case "Book":
-                System.out.println("Book Button Clicked");
-                break;
+                model.createHotel(name, basePrice, numOfStandardRooms, numOfDeluxeRooms, numOfExecutiveRooms);
+                view.displayMessage("Hotel " + name + " has been successfully created with a \nbase price of " + basePrice + " ,\n" 
+                + numOfStandardRooms + " standard rooms, \n" + numOfDeluxeRooms + " deluxe rooms, and \n" + numOfExecutiveRooms +
+                " executive rooms");
 
+            }
         }
 
 
+    // Menu button for view hotel
+    class BtnViewHotelListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            view.displayViewHotel();
+        }
     }
 
+    // Menu button for manage hotel
+    class BtnManageHotelListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            view.displayManageHotel();
+        }
+    }
 
+    
 
-
-
-
+    // Menu button for simulate booking
+    class BtnSimulateBookingListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            view.displaySimulateBooking();
+        }
+    }
 
 }

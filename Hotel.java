@@ -11,6 +11,7 @@ public class Hotel {
     private ArrayList<Room> rooms; // List of rooms in the hotel
     private int numOfRooms; // Current number of rooms in the hotel
     private ArrayList<CustomerReservation> reservations; // List of reservations made in the hotel
+    private float[] percent;
 
     /**
      * Constructs a new Hotel object with the specified name, number of rooms, and
@@ -21,20 +22,33 @@ public class Hotel {
      * @param numOfRooms The initial number of rooms in the hotel.
      * @param basePrice  The base price for each room.
      */
-    public Hotel(String name, int numOfRooms, double basePrice) {
-
+    public Hotel(String name, double basePrice, int numOfStandardRooms, int numOfDeluxeRooms, int numOfExecutiveRooms) {
         this.MAX_ROOMS = 50;
         this.hotelName = name;
-        this.numOfRooms = numOfRooms;
+        this.numOfRooms = numOfStandardRooms + numOfDeluxeRooms + numOfExecutiveRooms;
         this.rooms = new ArrayList<>();
-
-        // Initialize rooms with base price
-        for (int i = 0; i < numOfRooms; i++) {
-            this.rooms.add(new Room(i + 1, basePrice));
+        this.percent = new float[31];
+    
+        int roomNumber = 1;
+    
+        for (int i = 0; i < numOfStandardRooms; i++) {
+            this.rooms.add(new StandardRoom(roomNumber++, basePrice));
         }
-
+    
+        for (int i = 0; i < numOfDeluxeRooms; i++) {
+            this.rooms.add(new DeluxeRoom(roomNumber++, basePrice));
+        }
+    
+        for (int i = 0; i < numOfExecutiveRooms; i++) {
+            this.rooms.add(new ExecutiveRoom(roomNumber++, basePrice));
+        }
+    
         this.reservations = new ArrayList<>();
+
+        for (int i = 0; i < 31; i++)
+            percent[i] = 1.00f;
     }
+    
 
     /**
      * Gets the name of the hotel.
@@ -80,9 +94,35 @@ public class Hotel {
     public int getNumOfUnreservedRooms() {
         int count = 0;
         for (Room room : rooms) {
-            if (room.getDaysReserved() == 0) {
+            if (room.getDaysReserved() == 0)
                 count++;
-            }
+        }
+        return count;
+    }
+
+    public int getNumOfStandardRooms () {
+        int count = 0;
+        for (Room room : rooms) {
+            if (room.getRoomType().equals("Standard"))
+                count++;
+        }
+        return count;
+    }
+
+    public int getNumOfDeluxeRooms () {
+        int count = 0;
+        for (Room room : rooms) {
+            if (room.getRoomType().equals("Deluxe"))
+                count++;
+        }
+        return count;
+    }
+
+    public int getNumOfExecutiveRooms () {
+        int count = 0;
+        for (Room room : rooms) {
+            if (room.getRoomType().equals("Executive"))
+                count++;
         }
         return count;
     }
@@ -100,6 +140,10 @@ public class Hotel {
         return totalEarnings;
     }
 
+    public float getPercent(int date) {
+        return percent[date - 1];
+    }
+
     /**
      * Sets the name of the hotel.
      *
@@ -109,22 +153,31 @@ public class Hotel {
         this.hotelName = hotelName;
     }
 
+    public void setRoomPrice(double basePrice) {
+        for (Room room : rooms) {
+            room.setPrice(basePrice);
+        }
+    }
+
+    public void setPercent(int date, float newPercent) {
+        percent[date - 1] = newPercent;
+    }
+
     /**
      * Adds a specified number of rooms to the hotel.
      *
      * @param howMany Number of rooms to add.
      */
-    public void addRooms(int howMany) {
-
-        if (numOfRooms + howMany > MAX_ROOMS) {
-            throw new IllegalArgumentException("Cannot add more than " + MAX_ROOMS + " rooms");
-        } else {
-            numOfRooms += howMany;
-            for (int i = numOfRooms; i < numOfRooms + howMany; i++) {
-                rooms.add(new Room(i + 1, rooms.getFirst().getPrice())); // Assumes the first room's price is the base
-                // price
-            }
+    public void addRooms(int howMany, String type) {
+        for (int i = numOfRooms + 1; i <= numOfRooms + howMany; i++) {
+            if (type.equals("Standard"))
+                rooms.add(new StandardRoom(i, rooms.getFirst().getBasePrice()));
+            else if (type.equals("Deluxe"))
+                rooms.add(new DeluxeRoom(i, rooms.getFirst().getBasePrice()));
+            else 
+                rooms.add(new ExecutiveRoom(i, rooms.getFirst().getBasePrice()));
         }
+        numOfRooms += howMany;
     }
 
     /**
@@ -132,15 +185,17 @@ public class Hotel {
      *
      * @param howMany Number of rooms to remove.
      */
-    public void removeRooms(int howMany) {
-        if (numOfRooms - howMany < 1 || howMany == 0)
-            throw new IllegalArgumentException("Cannot remove more than " + MAX_ROOMS + " rooms");
-        for (int i = numOfRooms; i > numOfRooms - howMany; i--) {
-            if (rooms.get(i - 1).getDaysReserved() == 0) { // Check if room is unreserved
-                rooms.remove(i - 1);
+    public void removeRooms(int howMany, String type) {
+        for (int i = 0; i < rooms.size(); i++){
+            if (rooms.get(i).getRoomType() == type) {
+                rooms.remove(i);
             }
         }
-        numOfRooms -= howMany;
+
+        for (int i = 0; i < rooms.size(); i++) {
+            rooms.get(i).setNumber(i + 1);
+            numOfRooms = i;
+        }
     }
 
     /**
@@ -148,6 +203,15 @@ public class Hotel {
      */
     public void clearReservations() {
         reservations.clear();
+    }
+    
+    public void removeReservation(String name) {
+        for (int i = 0; i < reservations.size(); i++) {
+            if (name.equals(reservations.get(i).getCustomerName())) {
+                reservations.get(i).getRoomInfo().setIsReserved(reservations.get(i).getCheckInDate(), reservations.get(i).getCheckOutDate(),false);
+                reservations.remove(i);
+            }
+        }
     }
 
     /**
@@ -183,7 +247,7 @@ public class Hotel {
      * @param checkOutDate The check-out date.
      * @return A Room object if an available room is found; otherwise, null.
      */
-    public Room findAvailableRoom(int checkInDate, int checkOutDate) {
+    public Room findAvailableRoom(int checkInDate, int checkOutDate, String roomType) {
         for (Room room : rooms) {
             boolean isAvailable = true;
             for (int i = checkInDate; i < checkOutDate; i++) {
@@ -192,7 +256,7 @@ public class Hotel {
                     break;
                 }
             }
-            if (isAvailable) {
+            if (isAvailable && room.getRoomType() == roomType) {
                 return room;
             }
         }

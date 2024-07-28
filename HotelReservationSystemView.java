@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class HotelReservationSystemView extends JFrame {
 
-    // For the MainMenu
+    // Buttons for the MainMenu
     private JButton btnCreateHotel, btnViewHotel, btnManageHotel, btnSimulateBooking, btnBackToMainMenu;
 
     private JPanel northPanel, westPanel, centerPanel;
@@ -16,8 +16,13 @@ public class HotelReservationSystemView extends JFrame {
     // For Create Hotel
     private JPanel createHotelPanel;
     private JButton btnCreateSubmit;
+    private JTextField hotelNameField = new JTextField();
+    private JTextField numberOfStandardRoomsField = new JTextField();
+    private JTextField numberOfDeluxeRoomsField = new JTextField();
+    private JTextField numberOfExecutiveRoomsField = new JTextField();
+    private JTextField basePriceField = new JTextField();
 
-    //For View Hottel
+    //For View Hotel
     private JPanel viewHotelPanel;
     private JButton btnViewDetails, btnCheckAvailability, btnRoomInfo, btnReservationInfo;
 
@@ -78,11 +83,10 @@ public class HotelReservationSystemView extends JFrame {
         westPanel.setLayout(new GridBagLayout());
         westPanel.setPreferredSize(new Dimension(150, 600));
 
-        btnCreateHotel = createMenuButton("Create Hotel");
-        btnViewHotel = createMenuButton("View Hotel");
-        btnManageHotel = createMenuButton("Manage Hotel");
-        btnSimulateBooking = createMenuButton("Book Hotel");
-        btnBackToMainMenu = createMenuButton("Back to Main");
+        btnCreateHotel = new JButton("Create Hotel");
+        btnViewHotel = new JButton("View Hotel");
+        btnManageHotel = new JButton("Manage Hotel");
+        btnSimulateBooking = new JButton("Book Hotel");
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -90,11 +94,15 @@ public class HotelReservationSystemView extends JFrame {
         gbc.insets = new Insets(10, 0, 10, 0); // Spacing between buttons
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
+        setButtonElements(btnCreateHotel);
+        setButtonElements(btnViewHotel);
+        setButtonElements(btnManageHotel);
+        setButtonElements(btnSimulateBooking);
+
         westPanel.add(btnCreateHotel, gbc);
         westPanel.add(btnViewHotel, gbc);
         westPanel.add(btnManageHotel, gbc);
         westPanel.add(btnSimulateBooking, gbc);
-        westPanel.add(btnBackToMainMenu, gbc);
     }
 
     private void initMainMenuPanel() {
@@ -109,12 +117,6 @@ public class HotelReservationSystemView extends JFrame {
         createFormPanel.setBorder(new EmptyBorder(10, 25, 20, 25));
         createFormPanel.setPreferredSize(new Dimension(635, 453));
         createFormPanel.setBackground(Color.GRAY);
-
-        JTextField hotelNameField = new JTextField();
-        JTextField numberOfStandardRoomsField = new JTextField();
-        JTextField numberOfDeluxeRoomsField = new JTextField();
-        JTextField numberOfExecutiveRoomsField = new JTextField();
-        JTextField basePriceField = new JTextField();
 
         Font labelFont = new Font("Arial", Font.BOLD, 20);
         Font fieldFont = new Font("Arial", Font.BOLD, 20);
@@ -462,8 +464,7 @@ public class HotelReservationSystemView extends JFrame {
         simulateBookingPanel.add(btnBook);
 
     }
-    private JButton createMenuButton(String btnLabel) {
-        JButton button = new JButton(btnLabel);
+    private JButton setButtonElements(JButton button) {
         button.setPreferredSize(new Dimension(150, 50));
         button.setFont(new Font("Arial", Font.BOLD, 16));
         button.setBackground(Color.GRAY); // Dark blue color
@@ -501,6 +502,26 @@ public class HotelReservationSystemView extends JFrame {
         centerPanel.repaint();
     }
 
+    public void addBtnCreateHotelListener(ActionListener listener) {
+        btnCreateHotel.addActionListener(listener);
+    }
+
+        public void addBtnCreateSubmitListener(ActionListener listener) {
+            btnCreateSubmit.addActionListener(listener);
+        }
+
+    public void addBtnViewHotelListener(ActionListener listener) {
+        btnViewHotel.addActionListener(listener);
+    }
+
+    public void addBtnManageHotelListener(ActionListener listener) {
+        btnManageHotel.addActionListener(listener);
+    }
+
+    public void addBtnSimulateBookingListener(ActionListener listener) {
+        btnSimulateBooking.addActionListener(listener);
+    }
+
     public void setMainMenuActionListener(ActionListener listener) {
         btnCreateHotel.addActionListener(listener);
         btnViewHotel.addActionListener(listener);
@@ -523,5 +544,27 @@ public class HotelReservationSystemView extends JFrame {
         btnBook.addActionListener(listener);
     }
 
+    public String getHotelNameInput() {
+        return hotelNameField.getText();
+    }
 
+    public int getNumberOfStandardRoomsInput() {
+        return Integer.parseInt(numberOfStandardRoomsField.getText());
+    }
+
+    public int getNumberOfDeluxeRoomsInput() {
+        return Integer.parseInt(numberOfDeluxeRoomsField.getText());
+    }
+
+    public int getNumberOfExecutiveRoomsInput() {
+        return Integer.parseInt(numberOfExecutiveRoomsField.getText());
+    }
+
+    public double getBasePriceInput() {
+        return Double.parseDouble(basePriceField.getText());
+    }
+
+    public void displayMessage(String message){
+        JOptionPane.showMessageDialog(this, message);
+    }
 }

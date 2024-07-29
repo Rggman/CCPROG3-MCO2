@@ -56,6 +56,8 @@ public class HotelReservationSystemController {
                         view.displayMessage("Base price of hotel should be greater than 100");
                         return;
                     }
+                    if (view.getBasePriceInput().equals(""))
+                        basePrice = 1299;
 
                     model.createHotel(name, basePrice, numOfStandardRooms, numOfDeluxeRooms, numOfExecutiveRooms);
                     view.displayMessage("Hotel " + name + " has been successfully created with a \nbase price of " + basePrice + " ,\n" 
@@ -75,9 +77,137 @@ public class HotelReservationSystemController {
     class BtnViewHotelListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (model.getHotels().isEmpty()) {
+                view.displayMessage("No available hotels");
+                return;
+            }
             view.displayViewHotel();
+
+            view.getHotelComboBox3().removeAllItems();
+            for (Hotel hotel : model.getHotels())
+                view.getHotelComboBox3().addItem(hotel.getHotelName());
+            view.getHotelComboBox3().setSelectedItem(null);
+
+            view.addBtnViewListener(new BtnViewListener());
+            view.addBtnLowLevelInfoListener(new BtnLowLevelInfoListener());
         }
     }
+
+        class BtnViewListener implements ActionListener{
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = (String) view.getHotelComboBox3().getSelectedItem();
+                Hotel hotel = model.getHotel(name);
+                view.getNameLabel().setText("Hotel Name : " + name);
+                view.getNumOfRoomsLabel().setText("Number of Rooms : " + hotel.getHotelNumOfRooms());
+                view.getNumOfReservationsLabel().setText("Number of Reservations : " + hotel.getHotelReservations().size());
+                view.getEstimatedEarningsLabel().setText("Estimated Earnings: " + hotel.getEstimatedEarnings());
+                view.getUnreservedRoomsLabel().setText("Number of Unreserved Rooms: " + hotel.getNumOfUnreservedRooms());
+            }
+        }
+
+        class BtnLowLevelInfoListener implements ActionListener{
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = (String)view.getHotelComboBox3().getSelectedItem();
+                Hotel hotel = model.getHotel(name);
+                view.displayLowLevelInfo();
+
+                // Clear all combo box to avoid duplicates
+                view.getDateBox2().removeAllItems();
+                view.getRoomNumberBox().removeAllItems();
+                view.getReservationsBox2().removeAllItems();
+
+                // Populate dateBox2
+                for (int i = 1; i <= 31; i++)
+                    view.getDateBox2().addItem(Integer.toString(i));
+                // Populate roomNumberBox
+                for (Room room : hotel.getRooms()) {
+                    view.getRoomNumberBox().addItem(Integer.toString(room.getNumber()));
+                }
+                for (CustomerReservation r : hotel.getHotelReservations()) {
+                    view.getReservationsBox2().addItem(r.getCustomerName());
+                }
+                view.getDateBox2().setSelectedItem(null);
+                view.getRoomNumberBox().setSelectedItem(null);
+                view.getReservationsBox2().setSelectedItem(null);
+                
+                view.addBtnCheckAvailabilityListener(new BtnCheckAvailabilityListener());
+                view.addBtnRoomInfoListener(new BtnRoomInfoListener());
+                view.addBtnReservationInfoListener(new BtnReservationInfoListener());
+                view.addBtnBackToViewListener(new BtnBackToViewListener());
+            }
+        }
+
+        class BtnCheckAvailabilityListener implements ActionListener{
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = (String)view.getHotelComboBox3().getSelectedItem();
+                Hotel hotel = model.getHotel(name);
+                // Set info to display
+                int date = Integer.parseInt((String) view.getDateBox2().getSelectedItem());
+                int bookedRooms = hotel.countReservations(date);
+                int availableRooms = hotel.countAvailableRooms(date);
+                view.getLowLevelLabel().setText
+                ("Total number of booked rooms ---- " + bookedRooms + "\n"
+                +"Total number of available rooms - " + availableRooms);
+            }
+        }
+
+        class BtnRoomInfoListener implements ActionListener{
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = (String)view.getHotelComboBox3().getSelectedItem();
+                Hotel hotel = model.getHotel(name);
+                // Set info to display
+                Room room = hotel.getRooms().get(Integer.parseInt((String) view.getRoomNumberBox().getSelectedItem()));
+                StringBuilder roomInfo = new StringBuilder();
+                    roomInfo.append("Room Number: ").append(room.getNumber()).append("\n");
+                    roomInfo.append("Room Price: ").append(room.getPrice()).append("\n");
+                    roomInfo.append("Room Availability for the Month: \n");
+
+                    for (int i = 1; i <= 31; i++) {
+                        if (room.getIsReserved(i))
+                            roomInfo.append(i).append(" (R) ");
+                        else 
+                            roomInfo.append(i).append(" (A) ");
+                        if (i % 8 == 0)
+                            roomInfo.append("\n");
+                    }
+                view.getLowLevelLabel().setText
+                (roomInfo.toString());
+                }
+        }
+
+        class BtnReservationInfoListener implements ActionListener{
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = (String)view.getHotelComboBox3().getSelectedItem();
+                Hotel hotel = model.getHotel(name);
+                // Set info to display
+                StringBuilder reservationInfo = new StringBuilder();
+                String customerName = (String) view.getReservationsBox2().getSelectedItem();
+                CustomerReservation reservation = hotel.getHotelReservation(customerName);
+
+                reservationInfo.append("Customer Name: ").append(reservation.getCustomerName()).append("\n");
+                reservationInfo.append("Check-in Date: ").append(reservation.getCheckInDate()).append("\n");
+                reservationInfo.append("Check-out Date: ").append(reservation.getCheckOutDate()).append("\n");
+                reservationInfo.append("Room Number: ").append(reservation.getRoomInfo().getNumber()).append("\n");
+                reservationInfo.append("Room Price: ").append(reservation.getRoomInfo().getPrice()).append("\n");
+                reservationInfo.append("Total Price: ").append(reservation.getTotalPrice()).append("\n");
+                    
+                
+                view.getLowLevelLabel().setText
+                (reservationInfo.toString());
+            }
+        }
+
+        class BtnBackToViewListener implements ActionListener{
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        }
 
     // Menu button for manage hotel
     class BtnManageHotelListener implements ActionListener {
@@ -113,7 +243,7 @@ public class HotelReservationSystemController {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    String name = (String)view.getHotelComboBox().getSelectedItem();
+                    String name = (String) view.getHotelComboBox().getSelectedItem();
                     Hotel hotel = model.getHotel(name);
                     view.getAddRoomBox().removeAllItems();
                     view.getRemoveRoomBox().removeAllItems();
@@ -250,14 +380,6 @@ public class HotelReservationSystemController {
                 view.displayMessage("All reservations for " + name + " have been removed");
             }
         }
-
-    // Menu button for back to view
-    class BtnBackToViewListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            view.displayViewHotel();
-        }
-    }
 
     // Menu button for simulate booking
     class BtnSimulateBookingListener implements ActionListener {

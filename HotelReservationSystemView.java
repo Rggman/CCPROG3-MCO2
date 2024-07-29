@@ -40,7 +40,14 @@ public class HotelReservationSystemView extends JFrame {
     private JLabel numOfReservationsLabel = new JLabel("Number of Reservations: ");
     private JLabel estimatedEarningsLabel = new JLabel("Estimated Earnings: ");
     private JLabel numOfAvailableRoomsLabel = new JLabel("Number of Unbooked Rooms: ");
-    private JLabel lowLevelLabel = new JLabel();
+    private JPanel newInfoPanel = new JPanel(new GridLayout(0, 2, 10, 10));
+    private JLabel lowLevelLabel1 = new JLabel();
+    private JLabel lowLevelLabel2 = new JLabel();
+    private JLabel lowLevelLabel3 = new JLabel();
+    private JLabel lowLevelLabel4 = new JLabel();
+    private JLabel lowLevelLabel5 = new JLabel();
+    private JLabel lowLevelLabel6 = new JLabel();
+    private JLabel lowLevelLabel7 = new JLabel();
 
     // For Manage Hotel
     private JPanel manageHotelsPanel;
@@ -363,9 +370,22 @@ public class HotelReservationSystemView extends JFrame {
         gbc.gridy = 7;
         reservationsBox2.setSelectedItem(null);
 
-        JPanel newInfoPanel = new JPanel(new GridLayout(0, 2, 10, 10));
         newInfoPanel.setLayout(new GridBagLayout());
-        newInfoPanel.add(lowLevelLabel, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        newInfoPanel.add(lowLevelLabel1, gbc);
+        gbc.gridy = 1;
+        newInfoPanel.add(lowLevelLabel2, gbc);
+        gbc.gridy = 2;
+        newInfoPanel.add(lowLevelLabel3, gbc);
+        gbc.gridy = 3;
+        newInfoPanel.add(lowLevelLabel4, gbc);
+        gbc.gridy = 4;
+        newInfoPanel.add(lowLevelLabel5, gbc);
+        gbc.gridy = 5;
+        newInfoPanel.add(lowLevelLabel6, gbc);
+        gbc.gridy = 6;
+        newInfoPanel.add(lowLevelLabel7, gbc);
 
         JPanel BackToViewButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         BackToViewButtonPanel.setSize(new Dimension(5, 5)); // Fixed size for the panel
@@ -375,14 +395,11 @@ public class HotelReservationSystemView extends JFrame {
         btnBackToView.setFont(new Font("Arial", Font.BOLD, 16));
         btnBackToView.setSize(new Dimension(30, 5)); // Fixed size for the button
 
-
         BackToViewButtonPanel.add(btnBackToView);
-
 
         lowLevelInformationPanel.add(LowLevelButtonPanel, BorderLayout.NORTH);
         lowLevelInformationPanel.add(newInfoPanel, BorderLayout.CENTER);
         lowLevelInformationPanel.add(BackToViewButtonPanel, BorderLayout.SOUTH);
-
     }
 
     private void initManageHotelsPanel() {
@@ -545,9 +562,7 @@ public class HotelReservationSystemView extends JFrame {
         JTextField customerNameField = new JTextField();
         JComboBox<String> roomTypeComboBox = new JComboBox<>();
         roomTypeComboBox.setBackground(Color.WHITE);
-        JComboBox<String> checkInDateBox = new JComboBox<>();
         checkInDateBox.setBackground(Color.WHITE);
-        JComboBox<String> checkOutDateBox = new JComboBox<>();
         checkOutDateBox.setBackground(Color.WHITE);
         JTextField couponCodeField = new JTextField();
 
@@ -592,7 +607,6 @@ public class HotelReservationSystemView extends JFrame {
         couponCodeField.setPreferredSize(new Dimension(200, 30));
 
         // Book Button
-        btnBook = new JButton("Book");
         btnBook.setBackground(Color.DARK_GRAY);
         btnBook.setForeground(Color.WHITE);
         btnBook.setFocusPainted(false);
@@ -602,11 +616,11 @@ public class HotelReservationSystemView extends JFrame {
 
         // Add components to the panel
         simulateBookingPanel.add(hotelLabel);
-        simulateBookingPanel.add(hotelComboBox);
+        simulateBookingPanel.add(hotelComboBox2);
         simulateBookingPanel.add(customerNameLabel);
         simulateBookingPanel.add(customerNameField);
         simulateBookingPanel.add(roomTypeLabel);
-        simulateBookingPanel.add(roomTypeComboBox);
+        simulateBookingPanel.add(roomTypeBox);
         simulateBookingPanel.add(checkInDateLabel);
         simulateBookingPanel.add(checkInDateBox);
         simulateBookingPanel.add(checkOutDateLabel);
@@ -669,9 +683,12 @@ public class HotelReservationSystemView extends JFrame {
         updateCenterPanel(manageHotelsPanel);
     }
 
-
     public void displaySimulateBooking() {
         updateCenterPanel(simulateBookingPanel);
+    }
+
+    public void displayNewInfo() {
+        updateCenterPanel(newInfoPanel);
     }
 
     public void updateCenterPanel(JPanel panel) {
@@ -679,6 +696,23 @@ public class HotelReservationSystemView extends JFrame {
         centerPanel.add(panel, BorderLayout.CENTER);
         centerPanel.revalidate();
         centerPanel.repaint();
+    }
+
+    public void newInfoPanel(JPanel panel) {
+        lowLevelInformationPanel.removeAll();
+        lowLevelInformationPanel.add(panel, BorderLayout.CENTER);
+        lowLevelInformationPanel.revalidate();
+        lowLevelInformationPanel.repaint();
+    }
+
+    public void clearInfo() {
+        lowLevelLabel1.setText(null);
+        lowLevelLabel2.setText(null);
+        lowLevelLabel3.setText(null);
+        lowLevelLabel4.setText(null);
+        lowLevelLabel5.setText(null);
+        lowLevelLabel6.setText(null);
+        lowLevelLabel7.setText(null);
     }
 
     public void addBtnCreateHotelListener(ActionListener listener) {
@@ -931,7 +965,35 @@ public class HotelReservationSystemView extends JFrame {
         return reservationsBox2;
     }
 
-    public JLabel getLowLevelLabel() {
-        return lowLevelLabel;
+    public JLabel getLowLevelLabel1() {
+        return lowLevelLabel1;
+    }
+
+    public JLabel getLowLevelLabel2() {
+        return lowLevelLabel2;
+    }
+
+    public JLabel getLowLevelLabel3() {
+        return lowLevelLabel3;
+    }
+
+    public JLabel getLowLevelLabel4() {
+        return lowLevelLabel4;
+    }
+
+    public JLabel getLowLevelLabel5() {
+        return lowLevelLabel5;
+    }
+
+    public JLabel getLowLevelLabel6() {
+        return lowLevelLabel6;
+    }
+
+    public JLabel getLowLevelLabel7() {
+        return lowLevelLabel7;
+    }
+
+    public JPanel getNewInfoPanel() {
+        return newInfoPanel;
     }
 }

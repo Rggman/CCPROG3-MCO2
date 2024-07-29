@@ -144,13 +144,14 @@ public class HotelReservationSystemController {
             public void actionPerformed(ActionEvent e) {
                 String name = (String)view.getHotelComboBox3().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
+                // Clear info
+                view.clearInfo();
                 // Set info to display
                 int date = Integer.parseInt((String) view.getDateBox2().getSelectedItem());
                 int bookedRooms = hotel.countReservations(date);
                 int availableRooms = hotel.countAvailableRooms(date);
-                view.getLowLevelLabel().setText
-                ("Total number of booked rooms ---- " + bookedRooms + "\n"
-                +"Total number of available rooms - " + availableRooms);
+                view.getLowLevelLabel1().setText("Total number of booked rooms ---- " + bookedRooms);
+                view.getLowLevelLabel2().setText("Total number of available rooms - " + availableRooms);
             }
         }
 
@@ -161,21 +162,44 @@ public class HotelReservationSystemController {
                 Hotel hotel = model.getHotel(name);
                 // Set info to display
                 Room room = hotel.getRooms().get(Integer.parseInt((String) view.getRoomNumberBox().getSelectedItem()));
-                StringBuilder roomInfo = new StringBuilder();
-                    roomInfo.append("Room Number: ").append(room.getNumber()).append("\n");
-                    roomInfo.append("Room Price: ").append(room.getPrice()).append("\n");
-                    roomInfo.append("Room Availability for the Month: \n");
+                // Clear info
+                view.clearInfo();
+                view.getLowLevelLabel1().setText("Room Number : " + room.getNumber());
+                view.getLowLevelLabel2().setText("Room Price : " + room.getPrice());
+                view.getLowLevelLabel3().setText("Room Availability : ");
+                StringBuilder infoB1 = new StringBuilder();
+                StringBuilder infoB2 = new StringBuilder();
+                StringBuilder infoB3 = new StringBuilder();
+                StringBuilder infoB4 = new StringBuilder();
 
-                    for (int i = 1; i <= 31; i++) {
+                    for (int i = 1; i <= 8; i++) {
                         if (room.getIsReserved(i))
-                            roomInfo.append(i).append(" (R) ");
+                            infoB1.append(i).append(" (R) ");
                         else 
-                            roomInfo.append(i).append(" (A) ");
-                        if (i % 8 == 0)
-                            roomInfo.append("\n");
+                            infoB1.append(i).append(" (A) ");
                     }
-                view.getLowLevelLabel().setText
-                (roomInfo.toString());
+                    for (int i = 9; i <= 16; i++) {
+                        if (room.getIsReserved(i))
+                            infoB2.append(i).append(" (R) ");
+                        else 
+                            infoB2.append(i).append(" (A) ");
+                    }
+                    for (int i = 17; i <= 24; i++) {
+                        if (room.getIsReserved(i))
+                            infoB3.append(i).append(" (R) ");
+                        else 
+                            infoB3.append(i).append(" (A) ");
+                    }
+                    for (int i = 17; i <= 24; i++) {
+                        if (room.getIsReserved(i))
+                            infoB4.append(i).append(" (R) ");
+                        else 
+                            infoB4.append(i).append(" (A) ");
+                    }
+                view.getLowLevelLabel4().setText(infoB1.toString());
+                view.getLowLevelLabel5().setText(infoB2.toString());
+                view.getLowLevelLabel6().setText(infoB3.toString());
+                view.getLowLevelLabel7().setText(infoB4.toString());
                 }
         }
 
@@ -185,20 +209,16 @@ public class HotelReservationSystemController {
                 String name = (String)view.getHotelComboBox3().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
                 // Set info to display
-                StringBuilder reservationInfo = new StringBuilder();
                 String customerName = (String) view.getReservationsBox2().getSelectedItem();
                 CustomerReservation reservation = hotel.getHotelReservation(customerName);
-
-                reservationInfo.append("Customer Name: ").append(reservation.getCustomerName()).append("\n");
-                reservationInfo.append("Check-in Date: ").append(reservation.getCheckInDate()).append("\n");
-                reservationInfo.append("Check-out Date: ").append(reservation.getCheckOutDate()).append("\n");
-                reservationInfo.append("Room Number: ").append(reservation.getRoomInfo().getNumber()).append("\n");
-                reservationInfo.append("Room Price: ").append(reservation.getRoomInfo().getPrice()).append("\n");
-                reservationInfo.append("Total Price: ").append(reservation.getTotalPrice()).append("\n");
-                    
-                
-                view.getLowLevelLabel().setText
-                (reservationInfo.toString());
+                // Clear info
+                view.clearInfo();
+                view.getLowLevelLabel1().setText("Customer Name: " + reservation.getCustomerName());
+                view.getLowLevelLabel2().setText("Check-in Date: " + reservation.getCheckInDate());
+                view.getLowLevelLabel3().setText("Check-out Date: " + reservation.getCheckOutDate());
+                view.getLowLevelLabel4().setText("Room Number: " + reservation.getRoomInfo().getNumber());
+                view.getLowLevelLabel5().setText("Room Price: " + reservation.getRoomInfo().getPrice());
+                view.getLowLevelLabel6().setText("Total Price: " + reservation.getTotalPrice());
             }
         }
 

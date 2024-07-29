@@ -29,6 +29,7 @@ public class HotelReservationSystemController {
         @Override
         public void actionPerformed(ActionEvent e) {
             view.displayCreateHotelForm();
+            view.removeListeners(view.getBtnCreateSubmit());
             view.addBtnCreateSubmitListener(new BtnCreateSubmitListener());
         }
     }
@@ -38,36 +39,51 @@ public class HotelReservationSystemController {
             public void actionPerformed(ActionEvent e) {
                 try {
                     String name = view.getHotelNameInput();
-                    int numOfStandardRooms = Integer.parseInt(view.getNumberOfStandardRoomsInput());
-                    int numOfDeluxeRooms = Integer.parseInt(view.getNumberOfDeluxeRoomsInput());
-                    int numOfExecutiveRooms = Integer.parseInt(view.getNumberOfExecutiveRoomsInput());
-                    double basePrice = Double.parseDouble(view.getBasePriceInput());
-
+                    String standardRoomsInput = view.getNumberOfStandardRoomsInput();
+                    String deluxeRoomsInput = view.getNumberOfDeluxeRoomsInput();
+                    String executiveRoomsInput = view.getNumberOfExecutiveRoomsInput();
+                    String basePriceInput = view.getBasePriceInput();
+    
+                    // Check if any input fields are empty
+                    if (name.isEmpty() || standardRoomsInput.isEmpty() || deluxeRoomsInput.isEmpty() || executiveRoomsInput.isEmpty()) {
+                        view.displayMessage("Please fill in all fields");
+                        return;
+                    }
+    
+                    int numOfStandardRooms = Integer.parseInt(standardRoomsInput);
+                    int numOfDeluxeRooms = Integer.parseInt(deluxeRoomsInput);
+                    int numOfExecutiveRooms = Integer.parseInt(executiveRoomsInput);
+                    double basePrice = Double.parseDouble(basePriceInput);
+    
                     if (!model.isHotelNameUnique(name)) {
                         view.displayMessage("Hotel " + name + " already exists");
                         return;
                     }
-                    if (numOfStandardRooms > 50 || numOfDeluxeRooms > 50 || numOfExecutiveRooms > 50 || 
-                    (numOfStandardRooms + numOfDeluxeRooms + numOfExecutiveRooms) > 50) {
-                        view.displayMessage("Maximuim number of total rooms is 50");
+                    if (numOfStandardRooms > 50 || numOfDeluxeRooms > 50 || numOfExecutiveRooms > 50 ||
+                            (numOfStandardRooms + numOfDeluxeRooms + numOfExecutiveRooms) > 50) {
+                        view.displayMessage("Maximum number of total rooms is 50");
                         return;
                     }
                     if (basePrice < 100) {
                         view.displayMessage("Base price of hotel should be greater than 100");
                         return;
                     }
-                    if (view.getBasePriceInput().equals(""))
+                    if (basePriceInput.isEmpty()) {
                         basePrice = 1299;
-
+                    }
+    
+                    // Since basePriceInput is not empty, this condition will never be true
+                    // So this part can be omitted
+                    // if (view.getBasePriceInput().equals(""))
+                    //     basePrice = 1299;
+    
                     model.createHotel(name, basePrice, numOfStandardRooms, numOfDeluxeRooms, numOfExecutiveRooms);
-                    view.displayMessage("Hotel " + name + " has been successfully created with a \nbase price of " + basePrice + " ,\n" 
-                    + numOfStandardRooms + " standard rooms, \n" + numOfDeluxeRooms + " deluxe rooms, and \n" + numOfExecutiveRooms +
-                    " executive rooms");
+                    view.displayMessage("Hotel " + name + " has been successfully created\nBase price : " + basePrice + "\n"
+                            + "Standard rooms : " + numOfStandardRooms + "\n" + "Deluxe rooms : " + numOfDeluxeRooms + "\n" +
+                            "Executive rooms : " + numOfExecutiveRooms);
                     view.clearCreateHotelForm();
-                }
-                catch (NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
                     view.displayMessage("Please enter valid numbers for rooms and prices");
-                    System.out.print(ex);
                 }
             }
         }
@@ -88,7 +104,9 @@ public class HotelReservationSystemController {
                 view.getHotelComboBox3().addItem(hotel.getHotelName());
             view.getHotelComboBox3().setSelectedItem(null);
 
+            view.removeListeners(view.getBtnView());
             view.addBtnViewListener(new BtnViewListener());
+            view.removeListeners(view.getBtnLowLevelInfo());
             view.addBtnLowLevelInfoListener(new BtnLowLevelInfoListener());
         }
     }
@@ -132,6 +150,10 @@ public class HotelReservationSystemController {
                 view.getRoomNumberBox().setSelectedItem(null);
                 view.getReservationsBox2().setSelectedItem(null);
                 
+                view.removeListeners(view.getBtnCheckAvailability());
+                view.removeListeners(view.getBtnRoomInfo());
+                view.removeListeners(view.getBtnReservationInfo());
+                view.removeListeners(view.getBtnBackToView());
                 view.addBtnCheckAvailabilityListener(new BtnCheckAvailabilityListener());
                 view.addBtnRoomInfoListener(new BtnRoomInfoListener());
                 view.addBtnReservationInfoListener(new BtnReservationInfoListener());
@@ -245,9 +267,17 @@ public class HotelReservationSystemController {
             view.getHotelComboBox().setSelectedItem(null);
             view.getTypeOfRoomBox().setSelectedItem(null);
 
+            view.removeListeners(view.getBtnAddRooms());
+            view.removeListeners(view.getBtnRemoveRooms());
+            view.removeListeners(view.getBtnChangeName());
+            view.removeListeners(view.getBtnChangePrice());
+            view.removeListeners(view.getBtnRemoveReservation());
+            view.removeListeners(view.getBtnRemoveAllReservation());
+            view.removeListeners(view.getBtnDelete());
+            view.removeListeners(view.getBtnDatePrice());
             view.populateRoomsComboBox(new PopulateRoomsBox());
             view.addBtnAddRoomsListener(new BtnAddRoomsListener());
-            view.addBtnRemoveRoomsListener(new BtnAddRoomsListener());
+            view.addBtnRemoveRoomsListener(new BtnRemoveRoomsListener());
             view.addBtnChangeNameListener(new BtnChangeNameListener());
             view.addBtnChangePriceListener(new BtnChangePriceListener());
             view.populateReservationsComboBox(new PopulateReservationsBox());
@@ -418,6 +448,7 @@ public class HotelReservationSystemController {
             view.getHotelComboBox2().setSelectedItem(null);
             view.getRoomTypeBox().setSelectedItem(null);
 
+            view.removeListeners(view.getBtnBookListener());
             view.populateRoomTypeBox(new PopulateRoomTypeBox());
             view.populateCheckInDateBox(new PopulateCheckInDateBox());
             view.populateCheckOutDateBox(new PopulateCheckOutDateBox());

@@ -16,7 +16,7 @@ public class HotelReservationSystemView extends JFrame {
 
     // For Create Hotel
     private JPanel createHotelPanel;
-    private JButton btnCreateSubmit;
+    private JButton btnCreateSubmit = new JButton("Submit");
     private JTextField hotelNameField = new JTextField();
     private JTextField numberOfStandardRoomsField = new JTextField();
     private JTextField numberOfDeluxeRoomsField = new JTextField();
@@ -215,7 +215,6 @@ public class HotelReservationSystemView extends JFrame {
         // Submit Button Panel
         JPanel submitButtonPanel = new JPanel(new FlowLayout());
         submitButtonPanel.setBackground(backgroundColor);
-        btnCreateSubmit = new JButton("Submit");
         btnCreateSubmit.setBackground(Color.DARK_GRAY);
         btnCreateSubmit.setForeground(Color.WHITE);
         btnCreateSubmit.setFocusPainted(false);
@@ -255,7 +254,6 @@ public class HotelReservationSystemView extends JFrame {
         hotelComboBox3.setPreferredSize(new Dimension(200, 30));
 
         // Button setup
-        btnViewDetails = new JButton("View Details");
         btnViewDetails.setBackground(Color.WHITE);
         btnViewDetails.setForeground(Color.DARK_GRAY);
         btnViewDetails.setFont(labelFont);
@@ -390,8 +388,6 @@ public class HotelReservationSystemView extends JFrame {
         JPanel BackToViewButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         BackToViewButtonPanel.setSize(new Dimension(5, 5)); // Fixed size for the panel
 
-
-        btnBackToView = new JButton("Back to View");
         btnBackToView.setFont(new Font("Arial", Font.BOLD, 16));
         btnBackToView.setSize(new Dimension(30, 5)); // Fixed size for the button
 
@@ -522,7 +518,6 @@ public class HotelReservationSystemView extends JFrame {
         JLabel dates = new JLabel("Modify Date Price:");
         JLabel chooseDate = new JLabel("Choose Date:");
         JLabel choosePercent = new JLabel("Choose Percent to Increase or Decrease Price:");
-        btnDatePrice = new JButton("Modify");
         btnDatePrice.setBackground(Color.DARK_GRAY);
         btnDatePrice.setForeground(Color.WHITE);
 
@@ -658,9 +653,10 @@ public class HotelReservationSystemView extends JFrame {
         return button;
     }
 
-    public JLabel setJLabel(String info) {
-        JLabel jlabel = new JLabel(info);
-        return jlabel;
+    public void removeListeners(JButton button) {
+        for (ActionListener al : button.getActionListeners()) {
+            button.removeActionListener(al);
+        }
     }
 
     public void displayMainMenu() {
@@ -995,5 +991,69 @@ public class HotelReservationSystemView extends JFrame {
 
     public JPanel getNewInfoPanel() {
         return newInfoPanel;
+    }
+
+    public JButton getBtnCreateSubmit() {
+        return btnCreateSubmit;
+    }
+
+    public JButton getBtnView() {
+        return btnViewHotel;
+    }
+
+    public JButton getBtnLowLevelInfo() {
+        return btnLowLevelInfo;
+    }
+
+    public JButton getBtnCheckAvailability() {
+        return btnCheckAvailability;
+    }
+
+    public JButton getBtnRoomInfo() {
+        return btnRoomInfo;
+    }
+
+    public JButton getBtnReservationInfo() {
+        return btnReservationInfo;
+    }
+
+    public JButton getBtnBackToView() {
+        return btnBackToView;
+    }
+
+    public JButton getBtnAddRooms() {
+        return btnAddRoom;
+    }
+
+    public JButton getBtnRemoveRooms() {
+        return btnRemoveRoom;
+    }
+
+    public JButton getBtnChangeName() {
+        return btnChangeName;
+    }
+
+    public JButton getBtnChangePrice() {
+        return btnChangePrice;
+    }
+
+    public JButton getBtnRemoveReservation() {
+        return btnRemoveReservation;
+    }
+
+    public JButton getBtnRemoveAllReservation() {
+        return btnRemoveAllReservation;
+    }
+
+    public JButton getBtnDelete() {
+        return btnDeleteHotel;
+    }
+
+    public JButton getBtnDatePrice() {
+        return btnDatePrice;
+    }
+
+    public JButton getBtnBookListener() {
+        return btnBook;
     }
 }

@@ -27,6 +27,7 @@ public class HotelReservationSystemController {
             view.displayCreateHotelForm();
             view.removeListeners(view.getBtnCreateSubmit());
             view.addBtnCreateSubmitListener(new BtnCreateSubmitListener());
+            view.clearViewHotelForm();
         }
     }
 
@@ -104,6 +105,7 @@ public class HotelReservationSystemController {
             view.addBtnViewListener(new BtnViewListener());
             view.removeListeners(view.getBtnLowLevelInfo());
             view.addBtnLowLevelInfoListener(new BtnLowLevelInfoListener());
+            view.clearViewHotelForm();
         }
     }
 
@@ -161,6 +163,7 @@ public class HotelReservationSystemController {
                 view.addBtnCheckAvailabilityListener(new BtnCheckAvailabilityListener());
                 view.addBtnRoomInfoListener(new BtnRoomInfoListener());
                 view.addBtnReservationInfoListener(new BtnReservationInfoListener());
+                view.clearLowLevelForm();
             }
         }
 
@@ -299,6 +302,7 @@ public class HotelReservationSystemController {
             view.addBtnRemoveAllReservationListener(new BtnRemoveAllReservationListener());
             view.addBtnDeleteListener(new BtnDeleteListener());
             view.addBtnDatePriceListener(new BtnDatePriceListener());
+            view.clearViewHotelForm();
         }
     }
 
@@ -357,6 +361,7 @@ public class HotelReservationSystemController {
                 Hotel hotel = model.getHotel(name);
                 hotel.addRooms(Integer.parseInt((String) view.getAddRoomBox().getSelectedItem()), (String) view.getTypeOfRoomBox().getSelectedItem());
                 view.displayMessage("Successfully added " + (String)view.getAddRoomBox().getSelectedItem() + " rooms");
+                view.clearManageHotelForm();
             }
         }
 
@@ -381,6 +386,7 @@ public class HotelReservationSystemController {
                 hotel.removeRooms(Integer.parseInt((String) view.getRemoveRoomBox().getSelectedItem()),
                 (String) view.getTypeOfRoomBox().getSelectedItem());
                 view.displayMessage("Successfully removed " + (String)view.getRemoveRoomBox().getSelectedItem() + " rooms");
+                view.clearManageHotelForm();
             }
         }
 
@@ -404,6 +410,7 @@ public class HotelReservationSystemController {
                 }
                 view.displayMessage("Hotel " + hotel.getHotelName() + " has been changed to " + view.getChangedNameInput());
                 hotel.setHotelName(view.getChangedNameInput().getText());
+                view.clearManageHotelForm();
             }
         }
 
@@ -428,6 +435,7 @@ public class HotelReservationSystemController {
                     }
                     hotel.setRoomPrice(Double.parseDouble(view.getChangedPriceInput().getText()));
                     view.displayMessage("Hotel " + hotel.getHotelName() + " base price is now " + view.getChangedPriceInput());
+                    view.clearManageHotelForm();
                 }
                 catch (NumberFormatException ex) {
                     view.displayMessage("Please enter valid number for price");
@@ -452,6 +460,7 @@ public class HotelReservationSystemController {
                 }
                 model.removeHotel(name);
                 JOptionPane.showMessageDialog(null, "Hotel " + name + " successfully deleted!");
+                view.clearManageHotelForm();
             }
         }
 
@@ -486,6 +495,7 @@ public class HotelReservationSystemController {
                 }
                 view.displayMessage(
                         "Date " + date + " price has been changed to " + (String) view.getDatesPercentBox().getSelectedItem());
+                    view.clearManageHotelForm();
             }
         }
 
@@ -505,6 +515,7 @@ public class HotelReservationSystemController {
                 Hotel hotel = model.getHotel(name);
                 hotel.removeReservation((String) view.getReservationsBox().getSelectedItem());
                 view.displayMessage("Reservation for " + (String) view.getReservationsBox().getSelectedItem() + "successfully removed");
+                view.clearManageHotelForm();
             }
         }
 
@@ -520,6 +531,7 @@ public class HotelReservationSystemController {
                 Hotel hotel = model.getHotel(name);
                 hotel.clearReservations();
                 view.displayMessage("All reservations for " + name + " have been removed");
+                view.clearManageHotelForm();
             }
         }
 
@@ -545,6 +557,7 @@ public class HotelReservationSystemController {
             view.populateCheckInDateBox(new PopulateCheckInDateBox());
             view.populateCheckOutDateBox(new PopulateCheckOutDateBox());
             view.addBtnBookListener(new BtnBookListener());
+            view.clearViewHotelForm();
         }
     }
 
@@ -684,6 +697,7 @@ public class HotelReservationSystemController {
                 view.displayMessage("Successfully made reservation for: \n" + "Customer name : " + reservation.getCustomerName() + "\n"
                 + "Check-in date : " + reservation.getCheckInDate() + "\n" + "Check-out date : " + reservation.getCheckOutDate() + "\n"
                 + "Room Type : " + reservation.getRoomInfo().getRoomType() + "\n" + "Total Price : " + reservation.getTotalPrice());
+                view.clearSimulateBookingForm();
             }
         }
 

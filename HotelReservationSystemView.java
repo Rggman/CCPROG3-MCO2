@@ -850,6 +850,48 @@ public class HotelReservationSystemView extends JFrame {
         basePriceField.setText("");
     }
 
+    public void clearViewHotelForm() {
+        nameLabel.setText("");
+        numOfRoomsLabel.setText("");
+        numOfReservationsLabel.setText("");
+        estimatedEarningsLabel.setText("");
+        numOfAvailableRoomsLabel.setText("");
+    }
+
+    public void clearLowLevelForm() {
+        lowLevelLabel1.setText("");
+        lowLevelLabel2.setText("");
+        lowLevelLabel3.setText("");
+        lowLevelLabel4.setText("");
+        lowLevelLabel5.setText("");
+        lowLevelLabel6.setText("");
+        lowLevelLabel7.setText("");
+        dateBox2.setSelectedItem(null);
+        roomNumberBox.setSelectedItem(null);
+        reservationsBox2.setSelectedItem(null);
+    }
+
+    public void clearManageHotelForm() {
+        hotelComboBox.setSelectedItem(null);
+        typeOfRoomBox.setSelectedItem(null);
+        addRoomsBox.setSelectedItem(null);
+        removeRoomsBox.setSelectedItem(null);
+        reservationsBox.setSelectedItem(null);
+        datesBox.setSelectedItem(null);
+        datesPercentBox.setSelectedItem(null);
+        changeNameTextField.setText("");
+        changePriceTextField.setText("");
+    }
+
+    public void clearSimulateBookingForm() {
+        customerNameField.setText("");
+        hotelComboBox2.setSelectedItem(null);
+        roomTypeBox.setSelectedItem(null);
+        checkInDateBox.setSelectedItem(null);
+        checkOutDateBox.setSelectedItem(null);
+        couponCodeField.setText("");
+    }
+
     public JComboBox<String> getHotelComboBox() {
         return hotelComboBox;
     }

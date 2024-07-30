@@ -44,6 +44,7 @@ public class HotelReservationSystemController {
         }
     }
 
+
     /**
      * Handles the submission of the "Create Hotel" form.
      */
@@ -186,7 +187,34 @@ public class HotelReservationSystemController {
             view.addBtnCheckAvailabilityListener(new BtnCheckAvailabilityListener());
             view.addBtnRoomInfoListener(new BtnRoomInfoListener());
             view.addBtnReservationInfoListener(new BtnReservationInfoListener());
+            view.addBtnPriceBreakdownListener(new BtnPriceBreakdownListener());
             view.clearLowLevelForm();
+        }
+    }
+
+    /**
+     * Handles the action of the "Price Breakdown" button.
+     */
+    class BtnPriceBreakdownListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+
+            String name = (String)view.getHotelComboBox3().getSelectedItem();
+            Hotel hotel = model.getHotel(name);
+
+            String customerName = (String) view.getReservationsBox2().getSelectedItem();
+            CustomerReservation reservation = hotel.getHotelReservation(customerName);
+
+            String[] display = new String[reservation.getCheckOutDate() - reservation.getCheckInDate()];
+
+            int j = 0;
+            for (int i = reservation.getCheckInDate(); i < reservation.getCheckOutDate(); i++) {
+                display[j] = "Day " + (j+1) + ": " + reservation.getRoomInfo().getPrice() * reservation.getDatePercent(i);
+                j++;
+            }
+            System.out.println("test");
+            JOptionPane.showMessageDialog(null, display);
         }
     }
 
@@ -295,6 +323,7 @@ public class HotelReservationSystemController {
             view.getLowLevelLabel4().setText("Room Number: " + reservation.getRoomInfo().getNumber());
             view.getLowLevelLabel5().setText("Room Price: " + reservation.getRoomInfo().getPrice());
             view.getLowLevelLabel6().setText("Total Price: " + reservation.getTotalPrice());
+            view.showBtnPriceBreakdown();
         }
     }
 
@@ -304,6 +333,7 @@ public class HotelReservationSystemController {
     class BtnManageHotelListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+
             if (model.getHotels().isEmpty()) {
                 view.displayMessage("No available hotels");
                 return;
@@ -367,7 +397,9 @@ public class HotelReservationSystemController {
     class PopulateReservationsBox implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent e) {
+
             if (e.getStateChange() == ItemEvent.SELECTED) {
+                view.getReservationsBox().removeAllItems();
                 String name = (String) view.getHotelComboBox().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
                 for (CustomerReservation r : hotel.getHotelReservations()) {
@@ -454,7 +486,7 @@ public class HotelReservationSystemController {
                 view.displayMessage("Hotel " + view.getChangedNameInput() + " already exists");
                 return;
             }
-            view.displayMessage("Hotel " + hotel.getHotelName() + " has been changed to " + view.getChangedNameInput());
+            view.displayMessage("Hotel " + hotel.getHotelName() + " has been changed to " + view.getChangedNameInput().getText());
             hotel.setHotelName(view.getChangedNameInput().getText());
             view.clearManageHotelForm();
         }
@@ -483,7 +515,7 @@ public class HotelReservationSystemController {
                     return;
                 }
                 hotel.setRoomPrice(Double.parseDouble(view.getChangedPriceInput().getText()));
-                view.displayMessage("Hotel " + hotel.getHotelName() + " base price is now " + view.getChangedPriceInput());
+                view.displayMessage("Hotel " + hotel.getHotelName() + " base price is now " + view.getChangedPriceInput().getText());
                 view.clearManageHotelForm();
             }
             catch (NumberFormatException ex) {
@@ -738,7 +770,7 @@ public class HotelReservationSystemController {
                 view.displayMessage("Choose a check-in date first");
                 return;
             }
-            if (view.getCouponCodeFieldInput().getText().isEmpty()) {
+            if (couponCode.isEmpty()) {
                 couponCode = "0";
             }
 

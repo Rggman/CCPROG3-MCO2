@@ -14,7 +14,6 @@ public class HotelReservationSystemView extends JFrame {
 
     // Buttons for the MainMenu
     private JButton btnCreateHotel, btnViewHotel, btnManageHotel, btnSimulateBooking;
-
     private JPanel northPanel, westPanel, centerPanel;
     private JPanel mainMenuPanel;
 
@@ -38,6 +37,8 @@ public class HotelReservationSystemView extends JFrame {
     private JButton btnRoomInfo = new JButton("Check Room Info");
     private JButton btnReservationInfo = new JButton("Check Reservation Info");
     private JButton btnLowLevelInfo = new JButton("More Information");
+    private JButton btnPriceBreakDown = new JButton("Price Breakdown");
+
     private JLabel nameLabel = new JLabel("Hotel Name: ");
     private JLabel numOfRoomsLabel = new JLabel("Number of Rooms: ");
     private JLabel numOfReservationsLabel = new JLabel("Number of Reservations: ");
@@ -421,9 +422,21 @@ public class HotelReservationSystemView extends JFrame {
         gbc.gridy = 7;
         reservationsBox2.setSelectedItem(null);
 
+
+        Font infoFont = new Font("Sans-Serif", Font.PLAIN, 18);
+
         newInfoPanel.setLayout(new GridBagLayout());
         gbc.gridx = 0;
         gbc.gridy = 0;
+        lowLevelLabel1.setFont(infoFont);
+        lowLevelLabel2.setFont(infoFont);
+        lowLevelLabel3.setFont(infoFont);
+        lowLevelLabel4.setFont(infoFont);
+        lowLevelLabel5.setFont(infoFont);
+        lowLevelLabel6.setFont(infoFont);
+        lowLevelLabel7.setFont(infoFont);
+
+
         newInfoPanel.add(lowLevelLabel1, gbc);
         gbc.gridy = 1;
         newInfoPanel.add(lowLevelLabel2, gbc);
@@ -438,10 +451,17 @@ public class HotelReservationSystemView extends JFrame {
         gbc.gridy = 6;
         newInfoPanel.add(lowLevelLabel7, gbc);
 
+
+
         lowLevelInformationPanel.add(LowLevelButtonPanel, BorderLayout.NORTH);
         lowLevelInformationPanel.add(newInfoPanel, BorderLayout.CENTER);
     }
 
+    public void showBtnPriceBreakdown() {
+        btnPriceBreakDown.setBackground(Color.DARK_GRAY);
+        btnPriceBreakDown.setForeground(Color.WHITE);
+        lowLevelInformationPanel.add(btnPriceBreakDown, BorderLayout.SOUTH);
+    }
     /**
      * Initializes the Manage Hotel Panel
      */
@@ -545,8 +565,25 @@ public class HotelReservationSystemView extends JFrame {
         gbc.gridx = 2;
         formPanel.add(btnChangePrice, gbc);
 
-        gbc.gridx = 0;
         gbc.gridy = 6;
+        gbc.gridx = 0;
+        formPanel.add(new JLabel("Delete Hotel:"), gbc);
+        gbc.gridx = 1;
+        reservationsBox.setBackground(Color.WHITE);
+        formPanel.add(reservationsBox, gbc);
+        gbc.gridx = 2;
+        btnRemoveReservation.setBackground(Color.DARK_GRAY);
+        btnRemoveReservation.setForeground(Color.WHITE);
+        btnRemoveReservation.setFont(labelFont);
+        formPanel.add(btnRemoveReservation, gbc);
+        gbc.gridx = 3;
+        btnRemoveAllReservation.setBackground(Color.DARK_GRAY);
+        btnRemoveAllReservation.setForeground(Color.WHITE);
+        btnRemoveAllReservation.setFont(labelFont);
+        formPanel.add(btnRemoveAllReservation, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 7;
         formPanel.add(btnDeleteHotel, gbc);
 
         for (int i = 1; i <= 31; i++) {
@@ -569,19 +606,18 @@ public class HotelReservationSystemView extends JFrame {
         btnDatePrice.setForeground(Color.WHITE);
 
         gbc.gridx = 0;
-        gbc.gridy = 7;
-        formPanel.add(dates, gbc);
         gbc.gridy = 8;
+        formPanel.add(dates, gbc);
+        gbc.gridy = 9;
         formPanel.add(chooseDate, gbc);
         gbc.gridx = 1;
         formPanel.add(datesBox, gbc);
         gbc.gridx = 0;
-        gbc.gridy = 9;
+        gbc.gridy = 10;
         formPanel.add(choosePercent, gbc);
         gbc.gridx = 1;
         formPanel.add(datesPercentBox, gbc);
-        gbc.gridx = 0;
-        gbc.gridy = 10;
+        gbc.gridx = 2;
         formPanel.add(btnDatePrice, gbc);
 
         manageHotelsPanel.add(formPanel, BorderLayout.CENTER);
@@ -606,7 +642,6 @@ public class HotelReservationSystemView extends JFrame {
         roomTypeBox.setBackground(Color.WHITE);
         checkInDateBox.setBackground(Color.WHITE);
         checkOutDateBox.setBackground(Color.WHITE);
-        JTextField couponCodeField = new JTextField();
 
 
         // Hotel Label and ComboBox
@@ -867,6 +902,11 @@ public class HotelReservationSystemView extends JFrame {
      */
     public void addBtnReservationInfoListener(ActionListener listener) {
         btnReservationInfo.addActionListener(listener);
+    }
+
+
+    public void addBtnPriceBreakdownListener(ActionListener listener) {
+        btnPriceBreakDown.addActionListener(listener);
     }
 
     /**

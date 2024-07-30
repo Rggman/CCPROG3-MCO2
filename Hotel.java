@@ -200,7 +200,12 @@ public class Hotel {
      */
     public void setRoomPrice(double basePrice) {
         for (Room room : rooms) {
+           if(room.getRoomType().equals("Standard"))
             room.setPrice(basePrice);
+            if(room.getRoomType().equals("Deluxe"))
+                room.setPrice(basePrice * 1.25);
+            if(room.getRoomType().equals("Executive"))
+                room.setPrice(basePrice * 1.35);
         }
     }
 
@@ -223,7 +228,6 @@ public class Hotel {
         }
         numOfRooms += howMany;
     }
-
 
     /**
      * Removes a specified number of rooms from the hotel if they are unreserved.

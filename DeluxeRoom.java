@@ -18,6 +18,7 @@ public class DeluxeRoom extends Room {
     this.price = price * 1.25;
   }
 
+
   /**
    * Returns the price of the room.
    *

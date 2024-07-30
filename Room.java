@@ -23,7 +23,6 @@ public abstract class Room {
             isReserved[i] = false;
     }
 
-
     /**
      * Retrieves the number identifier of this Room instance.
      *

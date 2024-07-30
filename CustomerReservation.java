@@ -97,6 +97,22 @@ public class CustomerReservation {
         return totalPrice;
     }
 
+    /**
+     * Retrieves the double value of the datePercent array at the specified index.
+     *
+     * @param date The index of the datePercent array to retrieve.
+     * @return the double value of the datePercent array at the specified index.
+     */
+    public double getDatePercent(int date) {
+        return this.datePercent[date - 1];
+    }
+
+    /**
+     * Sets the double value of the datePercent array at the specified index.
+     *
+     * @param date The index of the datePercent array to set.
+     * @param percent The double value to set at the specified index.
+     */
     public void setDatePercent(int date, float percent) {
         this.datePercent[date - 1] = percent;
     }

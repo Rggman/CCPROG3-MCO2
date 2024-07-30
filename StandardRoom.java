@@ -45,4 +45,5 @@ public class StandardRoom extends Room {
   public void setPrice(double price) {
     this.price = price;
   }
+
 }

@@ -73,7 +73,6 @@ public class HotelReservationSystemModel {
         }
         return null;
     }
-
     /**
      * Removes a hotel from the system by its name.
      *

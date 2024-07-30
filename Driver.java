@@ -2,6 +2,7 @@
  @author Ganayo & Gonzales
  @version 2
  */
+
 public class Driver {
     public static void main(String[] args) {
         HotelReservationSystemView view = new HotelReservationSystemView();

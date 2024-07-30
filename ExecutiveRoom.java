@@ -7,6 +7,7 @@ public class ExecutiveRoom extends Room {
 
   private double price;
 
+
   /**
    * Constructs an ExecutiveRoom object with the specified room number and price.
    * The price is adjusted by multiplying the given price by 1.35.

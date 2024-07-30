@@ -3,13 +3,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
 
+
+/**
+ * The HotelReservationSystemController class is responsible for handling user interactions
+ * with the HotelReservationSystemView and managing the HotelReservationSystemModel.
+ * It listens for user actions and updates the view or model accordingly.
+ */
 public class HotelReservationSystemController {
 
     private HotelReservationSystemView view;
     private HotelReservationSystemModel model;
 
+    /**
+     * Constructs a HotelReservationSystemController with the specified view and model.
+     *
+     * @param view the view component of the system
+     * @param model the model component of the system
+     */
     public HotelReservationSystemController(HotelReservationSystemView view, HotelReservationSystemModel model) {
         this.view = view;
         this.model = model;
@@ -20,17 +31,22 @@ public class HotelReservationSystemController {
         this.view.addBtnSimulateBookingListener(new BtnSimulateBookingListener());
     }
 
-    // Menu button for create hotel
+    /**
+     * Handles the action of the "Create Hotel" button.
+     */
     class BtnCreateHotelListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             view.displayCreateHotelForm();
             view.removeListeners(view.getBtnCreateSubmit());
             view.addBtnCreateSubmitListener(new BtnCreateSubmitListener());
+            view.clearViewHotelForm();
         }
     }
 
-    // Create hotel button for submit
+    /**
+     * Handles the submission of the "Create Hotel" form.
+     */
     class BtnCreateSubmitListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -85,7 +101,9 @@ public class HotelReservationSystemController {
     }
 
 
-    // Menu button for view hotel
+    /**
+     * Handles the action of the "View Hotel" button.
+     */
     class BtnViewHotelListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -104,9 +122,13 @@ public class HotelReservationSystemController {
             view.addBtnViewListener(new BtnViewListener());
             view.removeListeners(view.getBtnLowLevelInfo());
             view.addBtnLowLevelInfoListener(new BtnLowLevelInfoListener());
+            view.clearViewHotelForm();
         }
     }
 
+    /**
+     * Handles the action of the "View Details" button.
+     */
     class BtnViewListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -125,6 +147,9 @@ public class HotelReservationSystemController {
         }
     }
 
+    /**
+     * Handles the action of the "More Information" button for low-level details.
+     */
     class BtnLowLevelInfoListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -161,9 +186,13 @@ public class HotelReservationSystemController {
             view.addBtnCheckAvailabilityListener(new BtnCheckAvailabilityListener());
             view.addBtnRoomInfoListener(new BtnRoomInfoListener());
             view.addBtnReservationInfoListener(new BtnReservationInfoListener());
+            view.clearLowLevelForm();
         }
     }
 
+    /**
+     * Handles the action of the "Check Availability" button.
+     */
     class BtnCheckAvailabilityListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -185,6 +214,9 @@ public class HotelReservationSystemController {
         }
     }
 
+    /**
+     * Handles the action of the "Check Room Info" button.
+     */
     class BtnRoomInfoListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -192,9 +224,7 @@ public class HotelReservationSystemController {
                 view.displayMessage("Choose a room number first");
                 return;
             }
-            String RESET = "\u001B[0m";
-            String RED = "\u001B[31m";
-            String GREEN = "\u001B[32m";
+
 
             String name = (String)view.getHotelComboBox3().getSelectedItem();
             Hotel hotel = model.getHotel(name);
@@ -241,6 +271,9 @@ public class HotelReservationSystemController {
         }
     }
 
+    /**
+     * Handles the action of the "Check Reservation Info" button.
+     */
     class BtnReservationInfoListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -254,7 +287,6 @@ public class HotelReservationSystemController {
             // Set info to display
             String customerName = (String) view.getReservationsBox2().getSelectedItem();
             CustomerReservation reservation = hotel.getHotelReservation(customerName);
-
             // Clear info
             view.clearInfo();
             view.getLowLevelLabel1().setText("Customer Name: " + reservation.getCustomerName());
@@ -266,7 +298,9 @@ public class HotelReservationSystemController {
         }
     }
 
-    // Menu button for manage hotel
+    /**
+     * Handles the action of the "Manage Hotel" button.
+     */
     class BtnManageHotelListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -300,10 +334,13 @@ public class HotelReservationSystemController {
             view.addBtnRemoveAllReservationListener(new BtnRemoveAllReservationListener());
             view.addBtnDeleteListener(new BtnDeleteListener());
             view.addBtnDatePriceListener(new BtnDatePriceListener());
+            view.clearViewHotelForm();
         }
     }
 
-    // Used to populate add rooms box and remove rooms box
+    /**
+     * Populates the room boxes
+     */
     class PopulateRoomsBox implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent e) {
@@ -324,13 +361,15 @@ public class HotelReservationSystemController {
         }
     }
 
+    /**
+     * Populates the reservation boxes
+     */
     class PopulateReservationsBox implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 String name = (String) view.getHotelComboBox().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
-                view.getReservationsBox().removeAllItems();
                 for (CustomerReservation r : hotel.getHotelReservations()) {
                     view.getReservationsBox().addItem(r.getCustomerName());
                 }
@@ -339,6 +378,9 @@ public class HotelReservationSystemController {
         }
     }
 
+    /**
+     * Handles the action of the "Add Rooms" button.
+     */
     class BtnAddRoomsListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -359,9 +401,13 @@ public class HotelReservationSystemController {
             Hotel hotel = model.getHotel(name);
             hotel.addRooms(Integer.parseInt((String) view.getAddRoomBox().getSelectedItem()), (String) view.getTypeOfRoomBox().getSelectedItem());
             view.displayMessage("Successfully added " + (String)view.getAddRoomBox().getSelectedItem() + " rooms");
+            view.clearManageHotelForm();
         }
     }
 
+    /**
+     * Handles the action of the "Remove Rooms" button.
+     */
     class BtnRemoveRoomsListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -383,9 +429,13 @@ public class HotelReservationSystemController {
             hotel.removeRooms(Integer.parseInt((String) view.getRemoveRoomBox().getSelectedItem()),
                     (String) view.getTypeOfRoomBox().getSelectedItem());
             view.displayMessage("Successfully removed " + (String)view.getRemoveRoomBox().getSelectedItem() + " rooms");
+            view.clearManageHotelForm();
         }
     }
 
+    /**
+     * Handles the action of the "Change Name" button.
+     */
     class BtnChangeNameListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -406,9 +456,13 @@ public class HotelReservationSystemController {
             }
             view.displayMessage("Hotel " + hotel.getHotelName() + " has been changed to " + view.getChangedNameInput());
             hotel.setHotelName(view.getChangedNameInput().getText());
+            view.clearManageHotelForm();
         }
     }
 
+    /**
+     * Handles the action of the "Change Price" button.
+     */
     class BtnChangePriceListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -430,6 +484,7 @@ public class HotelReservationSystemController {
                 }
                 hotel.setRoomPrice(Double.parseDouble(view.getChangedPriceInput().getText()));
                 view.displayMessage("Hotel " + hotel.getHotelName() + " base price is now " + view.getChangedPriceInput());
+                view.clearManageHotelForm();
             }
             catch (NumberFormatException ex) {
                 view.displayMessage("Please enter valid number for price");
@@ -438,6 +493,9 @@ public class HotelReservationSystemController {
         }
     }
 
+    /**
+     * Handles the action of the "Delete Hotel" button.
+     */
     class BtnDeleteListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -454,9 +512,13 @@ public class HotelReservationSystemController {
             }
             model.removeHotel(name);
             JOptionPane.showMessageDialog(null, "Hotel " + name + " successfully deleted!");
+            view.clearManageHotelForm();
         }
     }
 
+    /**
+     * Handles the action of the "Change Date Price" button.
+     */
     class BtnDatePriceListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -488,9 +550,13 @@ public class HotelReservationSystemController {
             }
             view.displayMessage(
                     "Date " + date + " price has been changed to " + (String) view.getDatesPercentBox().getSelectedItem());
+            view.clearManageHotelForm();
         }
     }
 
+    /**
+     * Handles the action of the "Remove Reservation" button.
+     */
     class BtnRemoveReservationListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -507,9 +573,13 @@ public class HotelReservationSystemController {
             Hotel hotel = model.getHotel(name);
             hotel.removeReservation((String) view.getReservationsBox().getSelectedItem());
             view.displayMessage("Reservation for " + (String) view.getReservationsBox().getSelectedItem() + "successfully removed");
+            view.clearManageHotelForm();
         }
     }
 
+    /**
+     * Handles the action of the "Remove All Reservation" button.
+     */
     class BtnRemoveAllReservationListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -522,10 +592,13 @@ public class HotelReservationSystemController {
             Hotel hotel = model.getHotel(name);
             hotel.clearReservations();
             view.displayMessage("All reservations for " + name + " have been removed");
+            view.clearManageHotelForm();
         }
     }
 
-    // Menu button for simulate booking
+    /**
+     * Handles the action of the "Simulate Booking" button.
+     */
     class BtnSimulateBookingListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -547,9 +620,13 @@ public class HotelReservationSystemController {
             view.populateCheckInDateBox(new PopulateCheckInDateBox());
             view.populateCheckOutDateBox(new PopulateCheckOutDateBox());
             view.addBtnBookListener(new BtnBookListener());
+            view.clearViewHotelForm();
         }
     }
 
+    /**
+     * Populate the roomType box
+     */
     class PopulateRoomTypeBox implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent e) {
@@ -572,6 +649,9 @@ public class HotelReservationSystemController {
         }
     }
 
+    /**
+     * Populate the checkInDate box
+     */
     class PopulateCheckInDateBox implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent e) {
@@ -598,6 +678,9 @@ public class HotelReservationSystemController {
         }
     }
 
+    /**
+     * Populate the checkOutDate box
+     */
     class PopulateCheckOutDateBox implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent e) {
@@ -625,6 +708,9 @@ public class HotelReservationSystemController {
         }
     }
 
+    /**
+     * Listener for the book button
+     */
     class BtnBookListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -686,6 +772,7 @@ public class HotelReservationSystemController {
             view.displayMessage("Successfully made reservation for: \n" + "Customer name : " + reservation.getCustomerName() + "\n"
                     + "Check-in date : " + reservation.getCheckInDate() + "\n" + "Check-out date : " + reservation.getCheckOutDate() + "\n"
                     + "Room Type : " + reservation.getRoomInfo().getRoomType() + "\n" + "Total Price : " + reservation.getTotalPrice());
+            view.clearSimulateBookingForm();
         }
     }
 

@@ -1,25 +1,22 @@
 /**
- * This class represents a Room object with attributes such as its "number" and
- * "price".
+ * This class represents a Room object with attributes such as its number and price.
  * It also provides functionality to check and manage reservations for the room.
  */
 public abstract class Room {
 
     private int number;
     private double basePrice;
-    private double price;
     private boolean[] isReserved;
 
     /**
-     * Constructs a Room object with the given number and price.
+     * Constructs a Room object with the given number and base price.
      *
      * @param number The number identifier of the room.
-     * @param price  The price per day of staying in the room.
+     * @param basePrice The base price per day of staying in the room.
      */
-    public Room(int number, double price) {
+    public Room(int number, double basePrice) {
         this.number = number;
-        this.basePrice = price;
-        this.price = price;
+        this.basePrice = basePrice;
         this.isReserved = new boolean[31]; // Assuming a maximum of 31 days in a month
 
         for (int i = 0; i < 31; i++)
@@ -35,17 +32,21 @@ public abstract class Room {
         return this.number;
     }
 
+    /**
+     * Retrieves the base price per day of this Room instance.
+     *
+     * @return The base price per day of staying in this room.
+     */
     public double getBasePrice() {
         return this.basePrice;
     }
+
     /**
      * Retrieves the price per day of this Room instance.
      *
      * @return The price per day of staying in this room.
      */
     public abstract double getPrice();
-
-
 
     /**
      * Checks if the room is reserved on a specific date.
@@ -58,8 +59,7 @@ public abstract class Room {
     }
 
     /**
-     * Retrieves the total number of days this room is reserved within the current
-     * month.
+     * Retrieves the total number of days this room is reserved within the current month.
      *
      * @return The count of reserved days in the current month.
      */
@@ -72,18 +72,21 @@ public abstract class Room {
         return count;
     }
 
+    /**
+     * Sets the number identifier of this Room instance.
+     *
+     * @param number The new number identifier of the room.
+     */
     public void setNumber(int number) {
         this.number = number;
     }
+
     /**
      * Sets the reservation status of the room for a range of dates.
      *
      * @param checkInDate  The starting date of the reservation (1 to 31).
      * @param checkOutDate The ending date of the reservation (1 to 31).
-     * @param reserve      true to reserve the room for the specified range, false
-     *                     to un-reserve.
-     *
-     *                     ///////////////////////////////////////////////////////////////////
+     * @param reserve      true to reserve the room for the specified range, false to un-reserve.
      */
     public void setIsReserved(int checkInDate, int checkOutDate, boolean reserve) {
         for (int i = checkInDate; i < checkOutDate; i++) {
@@ -98,6 +101,10 @@ public abstract class Room {
      */
     public abstract void setPrice(double price);
 
+    /**
+     * Retrieves the type of the room.
+     *
+     * @return A string indicating the type of the room.
+     */
     public abstract String getRoomType();
 }
-

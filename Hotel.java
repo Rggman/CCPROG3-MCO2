@@ -14,12 +14,14 @@ public class Hotel {
     private float[] percent;
 
     /**
-     * Constructs a new Hotel object with the specified name, number of rooms, and
-     * base price.
+     * Constructs a new Hotel object with the specified name, number of rooms, and base price.
      * Initializes rooms and reservations.
      *
-     * @param name       The name of the hotel.
-     * @param basePrice  The base price for each room.
+     * @param name                 The name of the hotel.
+     * @param basePrice            The base price for each room.
+     * @param numOfStandardRooms   The number of standard rooms to be added.
+     * @param numOfDeluxeRooms     The number of deluxe rooms to be added.
+     * @param numOfExecutiveRooms  The number of executive rooms to be added.
      */
     public Hotel(String name, double basePrice, int numOfStandardRooms, int numOfDeluxeRooms, int numOfExecutiveRooms) {
         this.MAX_ROOMS = 50;
@@ -107,6 +109,11 @@ public class Hotel {
         return count;
     }
 
+    /**
+     * Counts the number of standard rooms in the hotel.
+     *
+     * @return The number of standard rooms.
+     */
     public int getNumOfStandardRooms () {
         int count = 0;
         for (Room room : rooms) {
@@ -116,6 +123,11 @@ public class Hotel {
         return count;
     }
 
+    /**
+     * Counts the number of deluxe rooms in the hotel.
+     *
+     * @return The number of deluxe rooms.
+     */
     public int getNumOfDeluxeRooms () {
         int count = 0;
         for (Room room : rooms) {
@@ -125,6 +137,11 @@ public class Hotel {
         return count;
     }
 
+    /**
+     * Counts the number of executive rooms in the hotel.
+     *
+     * @return The number of executive rooms.
+     */
     public int getNumOfExecutiveRooms () {
         int count = 0;
         for (Room room : rooms) {
@@ -147,8 +164,24 @@ public class Hotel {
         return totalEarnings;
     }
 
+    /**
+     * Gets the occupancy percentage for a specific date.
+     *
+     * @param date The date to get the occupancy percentage for (1 to 31).
+     * @return The occupancy percentage for the specified date.
+     */
     public float getPercent(int date) {
         return percent[date - 1];
+    }
+
+    /**
+     * Sets the occupancy percentage for a specific date.
+     *
+     * @param date        The date to set the occupancy percentage for (1 to 31).
+     * @param newPercent  The new occupancy percentage for the specified date.
+     */
+    public void setPercent(int date, float newPercent) {
+        percent[date - 1] = newPercent;
     }
 
     /**
@@ -160,20 +193,24 @@ public class Hotel {
         this.hotelName = hotelName;
     }
 
+    /**
+     * Sets the price for all rooms in the hotel.
+     *
+     * @param basePrice The new base price for the rooms.
+     */
     public void setRoomPrice(double basePrice) {
         for (Room room : rooms) {
             room.setPrice(basePrice);
         }
     }
 
-    public void setPercent(int date, float newPercent) {
-        percent[date - 1] = newPercent;
-    }
+
 
     /**
      * Adds a specified number of rooms to the hotel.
      *
      * @param howMany Number of rooms to add.
+     * @param type    The type of rooms to add ("Standard", "Deluxe", "Executive").
      */
     public void addRooms(int howMany, String type) {
         for (int i = numOfRooms + 1; i <= numOfRooms + howMany; i++) {
@@ -191,6 +228,7 @@ public class Hotel {
      * Removes a specified number of rooms from the hotel if they are unreserved.
      *
      * @param howMany Number of rooms to remove.
+     * @param type    The type of rooms to remove ("Standard", "Deluxe", "Executive").
      */
     public void removeRooms(int howMany, String type) {
         for (int i = 0; i < rooms.size(); i++){
@@ -215,6 +253,11 @@ public class Hotel {
         }
     }
 
+    /**
+     * Removes a reservation by the customer's name and updates the room's reservation status.
+     *
+     * @param name The name of the customer whose reservation is to be removed.
+     */
     public void removeReservation(String name) {
         for (int i = 0; i < reservations.size(); i++) {
             if (name.equals(reservations.get(i).getCustomerName())) {
@@ -255,6 +298,7 @@ public class Hotel {
      *
      * @param checkInDate  The check-in date.
      * @param checkOutDate The check-out date.
+     * @param roomType     The type of room to find ("Standard", "Deluxe", "Executive").
      * @return A Room object if an available room is found; otherwise, null.
      */
     public Room findAvailableRoom(int checkInDate, int checkOutDate, String roomType) {

@@ -1,15 +1,18 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
 
+/**
+ * The HotelReservationSystemView class represents the graphical user interface (GUI)
+ * for the hotel reservation system. It provides panels, buttons, and input fields for
+ * creating hotels, viewing hotel details, managing hotels, and simulating bookings.
+ */
 public class HotelReservationSystemView extends JFrame {
 
     // Buttons for the MainMenu
-    private JButton btnCreateHotel, btnViewHotel, btnManageHotel, btnSimulateBooking, btnBackToMainMenu;
+    private JButton btnCreateHotel, btnViewHotel, btnManageHotel, btnSimulateBooking;
 
     private JPanel northPanel, westPanel, centerPanel;
     private JPanel mainMenuPanel;
@@ -78,15 +81,21 @@ public class HotelReservationSystemView extends JFrame {
     private JComboBox<String> checkOutDateBox = new JComboBox<>();
     private JTextField couponCodeField = new JTextField();
 
+
+    /**
+     * Constructs a new HotelReservationSystemView instance and initializes the GUI components.
+     */
+
     public HotelReservationSystemView() {
         super("Hotel Reservation System");
         setLayout(new BorderLayout());
         setSize(800, 600);
+        setBackground(new Color(245, 245, 245));
 
         initMainMenuPanel();
         initCreateHotelPanel();
         initViewHotelPanel();
-        initLowLevelInformation ();
+        initLowLevelInformation();
         initManageHotelsPanel();
         initSimulateBookingPanel();
 
@@ -109,18 +118,26 @@ public class HotelReservationSystemView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * Initializes the North Panel
+     */
+
     private void initNorthPanel() {
         northPanel = new JPanel();
-        northPanel.setBackground(new Color(45, 45, 45));
+        northPanel.setBackground(Color.decode("#004AAD"));
         northPanel.setLayout(new FlowLayout());
 
         JLabel titleLabel = new JLabel("Hotel Reservation System");
-        titleLabel.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 32));
-        titleLabel.setForeground(new Color(255, 105, 180));
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 32));
+        titleLabel.setForeground(Color.WHITE);
 
         northPanel.add(titleLabel);
     }
 
+
+    /**
+     * Initializes the West Panel
+     */
     private void initWestPanel() {
         westPanel = new JPanel();
         westPanel.setBackground(Color.DARK_GRAY);
@@ -149,11 +166,29 @@ public class HotelReservationSystemView extends JFrame {
         westPanel.add(btnSimulateBooking, gbc);
     }
 
+    /**
+     * Initializes the Main Menu Panel
+     */
     private void initMainMenuPanel() {
-        mainMenuPanel = new JPanel();
-        mainMenuPanel.setBackground(new Color(30, 144, 255));
+        mainMenuPanel = new JPanel(new BorderLayout());
+        mainMenuPanel.setBackground(Color.WHITE);
+
+        // Load the image
+        ImageIcon imageIcon = new ImageIcon("HamiltonHotels.png");
+
+        // Resize the image
+        Image image = imageIcon.getImage();
+        Image scaledImage = image.getScaledInstance(635, 510, Image.SCALE_SMOOTH);
+        ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
+
+        JLabel imageLabel = new JLabel(scaledImageIcon);
+
+        mainMenuPanel.add(imageLabel, BorderLayout.CENTER);
     }
 
+    /**
+     * Initializes the Create Hotel Panel
+     */
     private void initCreateHotelPanel() {
         // Create Hotel Panel
         createHotelPanel = new JPanel(new BorderLayout());
@@ -229,6 +264,9 @@ public class HotelReservationSystemView extends JFrame {
         createHotelPanel.add(submitButtonPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Initializes the View Hotel Panel
+     */
     private void initViewHotelPanel() {
         // Main panel setup
         viewHotelPanel = new JPanel(new BorderLayout());
@@ -317,20 +355,22 @@ public class HotelReservationSystemView extends JFrame {
         viewHotelPanel.add(lowLevelButtonPanel, BorderLayout.SOUTH);
     }
 
-    private void initLowLevelInformation () {
+    /**
+     * Initializes the Low Level Information Panel
+     */
+    private void initLowLevelInformation() {
 
         lowLevelInformationPanel = new JPanel(new BorderLayout());
-   //     lowLevelInformationPanel.setPreferredSize(new Dimension(550, 500));
+        lowLevelInformationPanel.setPreferredSize(new Dimension(550, 500));
         lowLevelInformationPanel.setBackground(new Color(30, 144, 255));
-   //     lowLevelInformationPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JPanel LowLevelButtonPanel = new JPanel(new GridLayout(0, 2, 10, 10));
         LowLevelButtonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        LowLevelButtonPanel.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10, 10, 10, 10);
+
+        dateBox2.setBackground(Color.WHITE);
+        roomNumberBox.setBackground(Color.WHITE);
+        reservationsBox2.setBackground(Color.WHITE);
 
         btnCheckAvailability.setBackground(Color.DARK_GRAY);
         btnCheckAvailability.setForeground(Color.WHITE);
@@ -339,9 +379,11 @@ public class HotelReservationSystemView extends JFrame {
         btnReservationInfo.setBackground(Color.DARK_GRAY);
         btnReservationInfo.setForeground(Color.WHITE);
 
-        dateBox2.setBackground(Color.WHITE);
-        roomNumberBox.setBackground(Color.WHITE);
-        reservationsBox2.setBackground(Color.WHITE);
+
+        LowLevelButtonPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 10, 10, 10);
 
         JLabel checkDateAvailabilityLabel = new JLabel("Choose Date:");
         gbc.gridx = 0;
@@ -399,6 +441,9 @@ public class HotelReservationSystemView extends JFrame {
         lowLevelInformationPanel.add(newInfoPanel, BorderLayout.CENTER);
     }
 
+    /**
+     * Initializes the Manage Hotel Panel
+     */
     private void initManageHotelsPanel() {
         Color background = new Color(245, 245, 245);
         Font labelFont = new Font("Sans-Serif", Font.BOLD, 12);
@@ -413,14 +458,6 @@ public class HotelReservationSystemView extends JFrame {
         btnDeleteHotel.setBackground(Color.DARK_GRAY);
         btnDeleteHotel.setForeground(Color.WHITE);
         btnDeleteHotel.setFont(labelFont);
-        btnRemoveReservation.setBackground(Color.DARK_GRAY);
-        btnRemoveReservation.setForeground(Color.WHITE);
-        btnRemoveReservation.setFont(labelFont);
-        btnRemoveAllReservation.setBackground(Color.DARK_GRAY);
-        btnRemoveAllReservation.setForeground(Color.WHITE);
-        btnRemoveAllReservation.setFont(labelFont);
-
-
 
         manageHotelsPanel = new JPanel(new BorderLayout());
         manageHotelsPanel.setPreferredSize(new Dimension(550, 500));
@@ -457,12 +494,9 @@ public class HotelReservationSystemView extends JFrame {
 
         addRoomsBox.setBackground(Color.WHITE);
         addRoomsBox.setSelectedItem(null);
-        reservationsBox.setBackground(Color.WHITE);
         btnAddRoom.setFont(labelFont);
         btnAddRoom.setBackground(Color.DARK_GRAY);
         btnAddRoom.setForeground(Color.WHITE);
-
-
 
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -512,20 +546,7 @@ public class HotelReservationSystemView extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 6;
-        formPanel.add(new JLabel("Remove Reservation:"), gbc);
-        gbc.gridx = 1;
-        formPanel.add(reservationsBox, gbc);
-        gbc.gridx = 2;
-        formPanel.add(btnRemoveReservation, gbc);
-        gbc.gridx = 3;
-        formPanel.add(btnRemoveAllReservation, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 7;
         formPanel.add(btnDeleteHotel, gbc);
-
-
-
 
         for (int i = 1; i <= 31; i++) {
             datesBox.addItem(Integer.toString(i));
@@ -547,28 +568,31 @@ public class HotelReservationSystemView extends JFrame {
         btnDatePrice.setForeground(Color.WHITE);
 
         gbc.gridx = 0;
-        gbc.gridy = 8;
+        gbc.gridy = 7;
         formPanel.add(dates, gbc);
-        gbc.gridy = 9;
+        gbc.gridy = 8;
         formPanel.add(chooseDate, gbc);
         gbc.gridx = 1;
         formPanel.add(datesBox, gbc);
         gbc.gridx = 0;
-        gbc.gridy = 10;
+        gbc.gridy = 9;
         formPanel.add(choosePercent, gbc);
         gbc.gridx = 1;
         formPanel.add(datesPercentBox, gbc);
-        gbc.gridx = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 10;
         formPanel.add(btnDatePrice, gbc);
 
         manageHotelsPanel.add(formPanel, BorderLayout.CENTER);
     }
 
+    /**
+     * Initializes Simulate Booking Panel
+     */
     private void initSimulateBookingPanel() {
 
         simulateBookingPanel = new JPanel(new GridLayout(7, 2, 10, 40)); // Adjusted to 7 rows to accommodate all components
         simulateBookingPanel.setBorder(new EmptyBorder(10, 25, 10, 25));
-        // simulateBookingPanel.setPreferredSize(new Dimension(550, 500));
         simulateBookingPanel.setBackground(new Color(245, 245, 245));
 
         // Fonts for labels and fields
@@ -584,12 +608,12 @@ public class HotelReservationSystemView extends JFrame {
         JTextField couponCodeField = new JTextField();
 
 
-
         // Hotel Label and ComboBox
         JLabel hotelLabel = new JLabel("Select Hotel:");
         hotelLabel.setFont(labelFont);
-        hotelComboBox.setFont(fieldFont);
-        hotelComboBox.setPreferredSize(new Dimension(200, 30));
+        hotelComboBox2.setFont(fieldFont);
+        hotelComboBox2.setPreferredSize(new Dimension(200, 30));
+
 
         // Customer Name Label and TextField
         JLabel customerNameLabel = new JLabel("Customer Name:");
@@ -603,6 +627,7 @@ public class HotelReservationSystemView extends JFrame {
         roomTypeLabel.setFont(labelFont);
         roomTypeBox.setFont(fieldFont);
         roomTypeBox.setPreferredSize(new Dimension(200, 30));
+        roomTypeBox.setBackground(Color.WHITE);
 
         // Check-in Date Label and ComboBox
         JLabel checkInDateLabel = new JLabel("Choose Check-in Date:");
@@ -649,6 +674,13 @@ public class HotelReservationSystemView extends JFrame {
     }
 
 
+    /**
+     * Configures the visual appearance and behavior of a given JButton. for the Main Menu Buttons
+     *
+     * @param button The JButton to be configured.
+     * @return The configured JButton with the applied settings.
+     */
+
     private JButton setButtonElements(JButton button) {
         button.setPreferredSize(new Dimension(150, 50));
         button.setFont(new Font("Arial", Font.BOLD, 16));
@@ -662,7 +694,7 @@ public class HotelReservationSystemView extends JFrame {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(Color.WHITE);
-                button.setForeground(new Color(255, 105, 180));
+                button.setForeground(Color.decode("#004AAD"));
             }
 
             @Override
@@ -675,40 +707,75 @@ public class HotelReservationSystemView extends JFrame {
         return button;
     }
 
+    /**
+     * Removes all action listeners from a given JButton.
+     *
+     * @param button The JButton to be configured.
+     * @return The configured JButton with the applied settings.
+     */
     public void removeListeners(JButton button) {
         for (ActionListener al : button.getActionListeners()) {
             button.removeActionListener(al);
         }
     }
 
+    /**
+     * Updates the center panel of the view to display the main menu.
+     */
+
     public void displayMainMenu() {
         updateCenterPanel(mainMenuPanel);
     }
 
+    /**
+     * Updates the center panel of the view to display the form for creating a new hotel.
+     */
     public void displayCreateHotelForm() {
         updateCenterPanel(createHotelPanel);
     }
 
+    /**
+     * Updates the center panel of the view to display the form for viewing a hotel.
+     */
     public void displayViewHotel() {
         updateCenterPanel(viewHotelPanel);
     }
 
+    /**
+     * Updates the center panel of the view to display the low-level information panel.
+     */
     public void displayLowLevelInfo() {
         updateCenterPanel(lowLevelInformationPanel);
     }
 
+    /**
+     * Updates the center panel of the view to display the form for managing a hotel.
+     */
     public void displayManageHotel() {
         updateCenterPanel(manageHotelsPanel);
     }
 
+
+    /**
+     * Updates the center panel of the view to display the form for simulating a booking.
+     */
     public void displaySimulateBooking() {
         updateCenterPanel(simulateBookingPanel);
     }
 
+    /**
+     * Updates the center panel of the view to display the new information panel.
+     */
     public void displayNewInfo() {
         updateCenterPanel(newInfoPanel);
     }
 
+
+    /**
+     * Updates the center panel of the view with a new panel.
+     *
+     * @param panel the new JPanel to be displayed in the center panel
+     */
     public void updateCenterPanel(JPanel panel) {
         centerPanel.removeAll();
         centerPanel.add(panel, BorderLayout.CENTER);
@@ -716,12 +783,9 @@ public class HotelReservationSystemView extends JFrame {
         centerPanel.repaint();
     }
 
-    public void newInfoPanel(JPanel panel) {
-        lowLevelInformationPanel.removeAll();
-        lowLevelInformationPanel.add(panel, BorderLayout.CENTER);
-        lowLevelInformationPanel.revalidate();
-        lowLevelInformationPanel.repaint();
-    }
+    /**
+     * Clears the text from all low-level information labels.
+     */
 
     public void clearInfo() {
         lowLevelLabel1.setText(null);
@@ -733,148 +797,279 @@ public class HotelReservationSystemView extends JFrame {
         lowLevelLabel7.setText(null);
     }
 
+    /**
+     * Adds an ActionListener to the create hotel button.
+     * * @param listener the ActionListener to be added to the create hotel button
+     */
     public void addBtnCreateHotelListener(ActionListener listener) {
         btnCreateHotel.addActionListener(listener);
     }
+
+    /**
+     * Adds an ActionListener to the create submit button.
+     * * @param listener the ActionListener to be added to the create submit  button
+     */
 
     public void addBtnCreateSubmitListener(ActionListener listener) {
         btnCreateSubmit.addActionListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the view hotel button.
+     * * @param listener the ActionListener to be added to the view hotel  button
+     */
     public void addBtnViewHotelListener(ActionListener listener) {
         btnViewHotel.addActionListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the view details button.
+     *
+     * @param listener the ActionListener to be added to the view details button
+     */
     public void addBtnViewListener(ActionListener listener) {
         btnViewDetails.addActionListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the low-level info button.
+     *
+     * @param listener the ActionListener to be added to the low-level info button
+     */
     public void addBtnLowLevelInfoListener(ActionListener listener) {
         btnLowLevelInfo.addActionListener(listener);
     }
+
+    /**
+     * Adds an ActionListener to the check availability button.
+     *
+     * @param listener the ActionListener to be added to the check availability button
+     */
 
     public void addBtnCheckAvailabilityListener(ActionListener listener) {
         btnCheckAvailability.addActionListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the room info button.
+     *
+     * @param listener the ActionListener to be added to the room info button
+     */
     public void addBtnRoomInfoListener(ActionListener listener) {
         btnRoomInfo.addActionListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the reservation info button.
+     *
+     * @param listener the ActionListener to be added to the reservation info button
+     */
     public void addBtnReservationInfoListener(ActionListener listener) {
         btnReservationInfo.addActionListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the manage hotel button.
+     *
+     * @param listener the ActionListener to be added to the manage hotel button
+     */
     public void addBtnManageHotelListener(ActionListener listener) {
         btnManageHotel.addActionListener(listener);
     }
 
+    /**
+     * Adds an ItemListener to the rooms combo box to handle item selection changes.
+     *
+     * @param listener the ItemListener to be added to the rooms combo box
+     */
     public void populateRoomsComboBox(ItemListener listener) {
         hotelComboBox.addItemListener(listener);
     }
 
+    /**
+     * Adds an ItemListener to the reservations combo box to handle item selection changes.
+     *
+     * @param listener the ItemListener to be added to the reservations combo box
+     */
     public void populateReservationsComboBox(ItemListener listener) {
         hotelComboBox.addItemListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the remove reservation button.
+     *
+     * @param listener the ActionListener to be added to the remove reservation button
+     */
     public void addBtnRemoveReservationListener(ActionListener listener) {
         btnRemoveReservation.addActionListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the remove all reservations button.
+     *
+     * @param listener the ActionListener to be added to the remove all reservations button
+     */
     public void addBtnRemoveAllReservationListener(ActionListener listener) {
         btnRemoveAllReservation.addActionListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the add room button.
+     *
+     * @param listener the ActionListener to be added to the add room button
+     */
     public void addBtnAddRoomsListener(ActionListener listener) {
         btnAddRoom.addActionListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the remove room button.
+     *
+     * @param listener the ActionListener to be added to the remove room button
+     */
     public void addBtnRemoveRoomsListener(ActionListener listener) {
         btnRemoveRoom.addActionListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the change name button.
+     *
+     * @param listener the ActionListener to be added to the change name button
+     */
     public void addBtnChangeNameListener(ActionListener listener) {
         btnChangeName.addActionListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the change price button.
+     *
+     * @param listener the ActionListener to be added to the change price button
+     */
     public void addBtnChangePriceListener(ActionListener listener) {
         btnChangePrice.addActionListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the delete hotel button.
+     *
+     * @param listener the ActionListener to be added to the delete hotel button
+     */
     public void addBtnDeleteListener(ActionListener listener) {
         btnDeleteHotel.addActionListener(listener);
     }
 
-    public void  addBtnDatePriceListener(ActionListener listener) {
+    /**
+     * Adds an ActionListener to the date price button.
+     *
+     * @param listener the ActionListener to be added to the date price button
+     */
+    public void addBtnDatePriceListener(ActionListener listener) {
         btnDatePrice.addActionListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the simulate booking button.
+     *
+     * @param listener the ActionListener to be added to the simulate booking button
+     */
     public void addBtnSimulateBookingListener(ActionListener listener) {
         btnSimulateBooking.addActionListener(listener);
     }
-    // Changes available choices for typeOfRoomBox when state of hotelComboBox2 is changed
+
+    /**
+     * Adds an ItemListener to the room type box to handle item selection changes based on the state of the hotel combo box.
+     *
+     * @param listener the ItemListener to be added to the room type box
+     */
     public void populateRoomTypeBox(ItemListener listener) {
         hotelComboBox2.addItemListener(listener);
     }
 
+    /**
+     * Adds an ItemListener to the check-in date box to handle item selection changes.
+     *
+     * @param listener the ItemListener to be added to the check-in date box
+     */
     public void populateCheckInDateBox(ItemListener listener) {
         roomTypeBox.addItemListener(listener);
     }
 
+    /**
+     * Adds an ItemListener to the check-out date box to handle item selection changes.
+     *
+     * @param listener the ItemListener to be added to the check-out date box
+     */
     public void populateCheckOutDateBox(ItemListener listener) {
         checkInDateBox.addItemListener(listener);
     }
 
+    /**
+     * Adds an ActionListener to the book button.
+     *
+     * @param listener the ActionListener to be added to the book button
+     */
     public void addBtnBookListener(ActionListener listener) {
         btnBook.addActionListener(listener);
     }
 
-    public void setMainMenuActionListener(ActionListener listener) {
-        btnCreateHotel.addActionListener(listener);
-        btnViewHotel.addActionListener(listener);
-        btnManageHotel.addActionListener(listener);
-        btnSimulateBooking.addActionListener(listener);
-        btnBackToMainMenu.addActionListener(listener);
-        btnCreateSubmit.addActionListener(listener);
-        btnViewDetails.addActionListener(listener);
-        btnCheckAvailability.addActionListener(listener);
-        btnRoomInfo.addActionListener(listener);
-        btnReservationInfo.addActionListener(listener);
-
-        btnAddRoom.addActionListener(listener);
-        btnRemoveRoom.addActionListener(listener);
-        btnChangeName.addActionListener(listener);
-        btnChangePrice.addActionListener(listener);
-        btnDeleteHotel.addActionListener(listener);
-        btnDatePrice.addActionListener(listener);
-
-        btnBook.addActionListener(listener);
-    }
+    /**
+     * Retrieves the text input from the hotel name field.
+     *
+     * @return the text from the hotel name field
+     */
 
     public String getHotelNameInput() {
         return hotelNameField.getText();
     }
 
+    /**
+     * Retrieves the text input from the number of standard rooms field.
+     *
+     * @return the text from the number of standard rooms field
+     */
     public String getNumberOfStandardRoomsInput() {
         return numberOfStandardRoomsField.getText();
     }
 
+    /**
+     * Retrieves the text input from the number of deluxe rooms field.
+     *
+     * @return the text from the number of deluxe rooms field
+     */
     public String getNumberOfDeluxeRoomsInput() {
         return numberOfDeluxeRoomsField.getText();
     }
 
+    /**
+     * Retrieves the text input from the number of executive rooms field.
+     *
+     * @return the text from the number of executive rooms field
+     */
     public String getNumberOfExecutiveRoomsInput() {
         return numberOfExecutiveRoomsField.getText();
     }
 
+    /**
+     * Retrieves the JTextField for base price input.
+     *
+     * @return the JTextField for base price input
+     */
     public JTextField getBasePriceInput() {
         return basePriceField;
     }
 
-    public void displayMessage(String message){
+    /**
+     * Displays a message in a JOptionPane.
+     *
+     * @param message the message to be displayed
+     */
+    public void displayMessage(String message) {
         JOptionPane.showMessageDialog(null, message);
     }
 
+    /**
+     * Clears the create hotel form.
+     */
     public void clearCreateHotelForm() {
         hotelNameField.setText("");
         numberOfStandardRoomsField.setText("");
@@ -883,190 +1078,471 @@ public class HotelReservationSystemView extends JFrame {
         basePriceField.setText("");
     }
 
+    /**
+     * Clears the view hotel form.
+     */
+    public void clearViewHotelForm() {
+        nameLabel.setText("");
+        numOfRoomsLabel.setText("");
+        numOfReservationsLabel.setText("");
+        estimatedEarningsLabel.setText("");
+        numOfAvailableRoomsLabel.setText("");
+    }
+
+    /**
+     * Clears the low level form.
+     */
+    public void clearLowLevelForm() {
+        lowLevelLabel1.setText("");
+        lowLevelLabel2.setText("");
+        lowLevelLabel3.setText("");
+        lowLevelLabel4.setText("");
+        lowLevelLabel5.setText("");
+        lowLevelLabel6.setText("");
+        lowLevelLabel7.setText("");
+        dateBox2.setSelectedItem(null);
+        roomNumberBox.setSelectedItem(null);
+        reservationsBox2.setSelectedItem(null);
+    }
+
+    /**
+     * Clears the manage hotel form.
+     */
+    public void clearManageHotelForm() {
+        hotelComboBox.setSelectedItem(null);
+        typeOfRoomBox.setSelectedItem(null);
+        addRoomsBox.setSelectedItem(null);
+        removeRoomsBox.setSelectedItem(null);
+        reservationsBox.setSelectedItem(null);
+        datesBox.setSelectedItem(null);
+        datesPercentBox.setSelectedItem(null);
+        changeNameTextField.setText("");
+        changePriceTextField.setText("");
+    }
+
+    /**
+     * Clears the simulate booking form.
+     */
+    public void clearSimulateBookingForm() {
+        customerNameField.setText("");
+        hotelComboBox2.setSelectedItem(null);
+        roomTypeBox.setSelectedItem(null);
+        checkInDateBox.setSelectedItem(null);
+        checkOutDateBox.setSelectedItem(null);
+        couponCodeField.setText("");
+    }
+
+    /**
+     * Returns the JComboBox used for selecting hotels.
+     *
+     * @return the hotelComboBox JComboBox
+     */
     public JComboBox<String> getHotelComboBox() {
         return hotelComboBox;
     }
 
+    /**
+     * Returns the JComboBox used for selecting room types.
+     *
+     * @return the typeOfRoomBox JComboBox
+     */
     public JComboBox<String> getTypeOfRoomBox() {
         return typeOfRoomBox;
     }
 
+    /**
+     * Returns the JComboBox used for adding rooms.
+     *
+     * @return the addRoomsBox JComboBox
+     */
     public JComboBox<String> getAddRoomBox() {
         return addRoomsBox;
     }
 
+    /**
+     * Returns the JComboBox used for removing rooms.
+     *
+     * @return the removeRoomsBox JComboBox
+     */
     public JComboBox<String> getRemoveRoomBox() {
         return removeRoomsBox;
     }
 
+    /**
+     * Returns the JTextField used for inputting the changed hotel name.
+     *
+     * @return the changeNameTextField JTextField
+     */
     public JTextField getChangedNameInput() {
         return changeNameTextField;
     }
 
+    /**
+     * Returns the JTextField used for inputting the changed price.
+     *
+     * @return the changePriceTextField JTextField
+     */
     public JTextField getChangedPriceInput() {
         return changePriceTextField;
     }
 
+    /**
+     * Returns the JComboBox used for selecting dates.
+     *
+     * @return the datesBox JComboBox
+     */
     public JComboBox<String> getDatesBox() {
         return datesBox;
     }
 
+    /**
+     * Returns the JComboBox used for selecting dates.
+     *
+     * @return the datesPercentBox JComboBox
+     */
     public JComboBox<String> getDatesPercentBox() {
         return datesPercentBox;
     }
 
+    /**
+     * Returns the JComboBox used for selecting reservations.
+     *
+     * @return the reservationsBox JComboBox
+     */
     public JComboBox<String> getReservationsBox() {
         return reservationsBox;
     }
 
+    /**
+     * Returns the JComboBox used for selecting hotels.
+     *
+     * @return the hotelComboBox2 JComboBox
+     */
     public JComboBox<String> getHotelComboBox2() {
         return hotelComboBox2;
     }
 
+    /**
+     * Returns the JComboBox used for selecting room types.
+     *
+     * @return the roomTypeBox JComboBox
+     */
     public JComboBox<String> getRoomTypeBox() {
         return roomTypeBox;
     }
 
+    /**
+     * Returns the JComboBox used for selecting check-in and check-out dates.
+     *
+     * @return the checkInDateBox JComboBox
+     */
     public JComboBox<String> getCheckInDateBox() {
         return checkInDateBox;
     }
 
+    /**
+     * Returns the JComboBox used for selecting check-in and check-out dates.
+     *
+     * @return the checkOutDateBox JComboBox
+     */
     public JComboBox<String> getCheckOutDateBox() {
         return checkOutDateBox;
     }
 
+    /**
+     * Returns the JTextField used for inputting the customer name.
+     *
+     * @return the customerNameField JTextField
+     */
     public JTextField getCustomerNameFieldInput() {
         return customerNameField;
     }
 
+    /**
+     * Returns the JTextField used for inputting the coupon code.
+     *
+     * @return the couponCodeField JTextField
+     */
     public JTextField getCouponCodeFieldInput() {
         return couponCodeField;
     }
 
+    /**
+     * Returns the JLabel used for displaying the hotel name.
+     *
+     * @return the nameLabel JLabel
+     */
     public JLabel getNameLabel() {
         return nameLabel;
     }
 
+    /**
+     * Returns the JLabel used for displaying the number of rooms.
+     *
+     * @return the numOfRoomsLabel JLabel
+     */
     public JLabel getNumOfRoomsLabel() {
         return numOfRoomsLabel;
     }
 
+    /**
+     * Returns the JLabel used for displaying the number of reservations.
+     *
+     * @return the numOfReservationsLabel JLabel
+     */
     public JLabel getNumOfReservationsLabel() {
         return numOfReservationsLabel;
     }
 
+    /**
+     * Returns the JLabel used for displaying the estimated earnings.
+     *
+     * @return the estimatedEarningsLabel JLabel
+     */
     public JLabel getEstimatedEarningsLabel() {
         return estimatedEarningsLabel;
     }
 
+    /**
+     * Returns the JLabel used for displaying the number of available rooms.
+     *
+     * @return the numOfAvailableRoomsLabel JLabel
+     */
     public JLabel getUnreservedRoomsLabel() {
         return numOfAvailableRoomsLabel;
     }
 
+    /**
+     * Returns the second JComboBox used for selecting hotels.
+     *
+     * @return the hotelComboBox2 JComboBox
+     */
     public JComboBox<String> getHotelComboBox3() {
         return hotelComboBox3;
     }
 
+    /**
+     * Returns the second JComboBox used for selecting dates.
+     *
+     * @return the dateBox2 JComboBox
+     */
     public JComboBox<String> getDateBox2() {
         return dateBox2;
     }
 
+    /**
+     * Returns the second JComboBox used for selecting room numbers.
+     *
+     * @return the roomNumberBox JComboBox
+     */
     public JComboBox<String> getRoomNumberBox() {
         return roomNumberBox;
     }
 
+    /**
+     * Returns the second JComboBox used for selecting reservations.
+     *
+     * @return the reservationsBox2 JComboBox
+     */
     public JComboBox<String> getReservationsBox2() {
         return reservationsBox2;
     }
 
+    /**
+     * Returns the JLabel used for displaying low-level information (1).
+     *
+     * @return the lowLevelLabel1 JLabel
+     */
     public JLabel getLowLevelLabel1() {
         return lowLevelLabel1;
     }
 
+    /**
+     * Returns the JLabel used for displaying low-level information (2).
+     *
+     * @return the lowLevelLabel2 JLabel
+     */
     public JLabel getLowLevelLabel2() {
         return lowLevelLabel2;
     }
 
+    /**
+     * Returns the JLabel used for displaying low-level information (3).
+     *
+     * @return the lowLevelLabel3 JLabel
+     */
     public JLabel getLowLevelLabel3() {
         return lowLevelLabel3;
     }
 
+    /**
+     * Returns the JLabel used for displaying low-level information (4).
+     *
+     * @return the lowLevelLabel4 JLabel
+     */
     public JLabel getLowLevelLabel4() {
         return lowLevelLabel4;
     }
 
+    /**
+     * Returns the JLabel used for displaying low-level information (5).
+     *
+     * @return the lowLevelLabel5 JLabel
+     */
     public JLabel getLowLevelLabel5() {
         return lowLevelLabel5;
     }
 
+    /**
+     * Returns the JLabel used for displaying low-level information (6).
+     *
+     * @return the lowLevelLabel6 JLabel
+     */
     public JLabel getLowLevelLabel6() {
         return lowLevelLabel6;
     }
 
+    /**
+     * Returns the JLabel used for displaying low-level information (7).
+     *
+     * @return the lowLevelLabel7 JLabel
+     */
     public JLabel getLowLevelLabel7() {
         return lowLevelLabel7;
     }
 
-    public JPanel getNewInfoPanel() {
-        return newInfoPanel;
-    }
 
+    /**
+     * Returns the JButton used for submitting hotel creation.
+     *
+     * @return the btnCreateSubmit JButton
+     */
     public JButton getBtnCreateSubmit() {
         return btnCreateSubmit;
     }
 
+    /**
+     * Returns the JButton used for viewing details.
+     *
+     * @return the btnViewDetails JButton
+     */
     public JButton getBtnView() {
         return btnViewDetails;
     }
 
+    /**
+     * Returns the JButton used for displaying low-level information.
+     *
+     * @return the btnLowLevelInfo JButton
+     */
     public JButton getBtnLowLevelInfo() {
         return btnLowLevelInfo;
     }
 
+    /**
+     * Returns the JButton used for checking availability.
+     *
+     * @return the btnCheckAvailability JButton
+     */
     public JButton getBtnCheckAvailability() {
         return btnCheckAvailability;
     }
 
+    /**
+     * Returns the JButton used for displaying room information.
+     *
+     * @return the btnRoomInfo JButton
+     */
     public JButton getBtnRoomInfo() {
         return btnRoomInfo;
     }
 
+    /**
+     * Returns the JButton used for displaying reservation information.
+     *
+     * @return the btnReservationInfo JButton
+     */
     public JButton getBtnReservationInfo() {
         return btnReservationInfo;
     }
 
+    /**
+     * Returns the JButton used for displaying reservation information.
+     *
+     * @return the btnReservationInfo JButton
+     */
     public JButton getBtnAddRooms() {
         return btnAddRoom;
     }
 
+    /**
+     * Returns the JButton used for displaying reservation information.
+     *
+     * @return the btnReservationInfo JButton
+     */
     public JButton getBtnRemoveRooms() {
         return btnRemoveRoom;
     }
 
+    /**
+     * Returns the JButton used for displaying reservation information.
+     *
+     * @return the btnReservationInfo JButton
+     */
     public JButton getBtnChangeName() {
         return btnChangeName;
     }
 
+    /**
+     * Returns the JButton used for displaying reservation information.
+     *
+     * @return the btnReservationInfo JButton
+     */
     public JButton getBtnChangePrice() {
         return btnChangePrice;
     }
 
+    /**
+     * Returns the JButton used for removing a reservation.
+     *
+     * @return the btnRemoveReservation JButton
+     */
     public JButton getBtnRemoveReservation() {
         return btnRemoveReservation;
     }
 
+    /**
+     * Returns the JButton used for removing all reservations.
+     *
+     * @return the btnRemoveAllReservation JButton
+     */
     public JButton getBtnRemoveAllReservation() {
         return btnRemoveAllReservation;
     }
 
+    /**
+     * Returns the JButton used for deleting a hotel.
+     *
+     * @return the btnDeleteHotel JButton
+     */
     public JButton getBtnDelete() {
         return btnDeleteHotel;
     }
 
+    /**
+     * Returns the JButton used for setting date-based prices.
+     *
+     * @return the btnDatePrice JButton
+     */
     public JButton getBtnDatePrice() {
         return btnDatePrice;
     }
 
+    /**
+     * Returns the JButton used for booking rooms.
+     *
+     * @return the btnBook JButton
+     */
     public JButton getBtnBookListener() {
         return btnBook;
     }

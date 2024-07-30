@@ -213,7 +213,6 @@ public class HotelReservationSystemController {
                 display[j] = "Day " + (j+1) + ": " + reservation.getRoomInfo().getPrice() * reservation.getDatePercent(i);
                 j++;
             }
-            System.out.println("test");
             JOptionPane.showMessageDialog(null, display);
         }
     }

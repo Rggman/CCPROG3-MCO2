@@ -18,10 +18,6 @@ public class HotelReservationSystemController {
         this.view.addBtnViewHotelListener(new BtnViewHotelListener());
         this.view.addBtnManageHotelListener(new BtnManageHotelListener());
         this.view.addBtnSimulateBookingListener(new BtnSimulateBookingListener());
-
-        this.view.addBtnBackToViewListener(new BtnBackToViewListener());
-
-
     }
 
     // Menu button for create hotel
@@ -33,6 +29,7 @@ public class HotelReservationSystemController {
             view.addBtnCreateSubmitListener(new BtnCreateSubmitListener());
         }
     }
+
         // Create hotel button for submit
         class BtnCreateSubmitListener implements ActionListener {
             @Override
@@ -42,13 +39,16 @@ public class HotelReservationSystemController {
                     String standardRoomsInput = view.getNumberOfStandardRoomsInput();
                     String deluxeRoomsInput = view.getNumberOfDeluxeRoomsInput();
                     String executiveRoomsInput = view.getNumberOfExecutiveRoomsInput();
-                    String basePriceInput = view.getBasePriceInput();
+                    String basePriceInput = view.getBasePriceInput().getText();
     
                     // Check if any input fields are empty
                     if (name.isEmpty() || standardRoomsInput.isEmpty() || deluxeRoomsInput.isEmpty() || executiveRoomsInput.isEmpty()) {
                         view.displayMessage("Please fill in all fields");
                         return;
                     }
+
+                    if (basePriceInput.isEmpty())
+                        basePriceInput = "1299";
     
                     int numOfStandardRooms = Integer.parseInt(standardRoomsInput);
                     int numOfDeluxeRooms = Integer.parseInt(deluxeRoomsInput);
@@ -72,10 +72,6 @@ public class HotelReservationSystemController {
                         basePrice = 1299;
                     }
     
-                    // Since basePriceInput is not empty, this condition will never be true
-                    // So this part can be omitted
-                    // if (view.getBasePriceInput().equals(""))
-                    //     basePrice = 1299;
     
                     model.createHotel(name, basePrice, numOfStandardRooms, numOfDeluxeRooms, numOfExecutiveRooms);
                     view.displayMessage("Hotel " + name + " has been successfully created\nBase price : " + basePrice + "\n"
@@ -114,6 +110,11 @@ public class HotelReservationSystemController {
         class BtnViewListener implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (view.getHotelComboBox3().getSelectedItem() == null) {
+                    view.displayMessage("Choose a hotel first");
+                    return;
+                }
+
                 String name = (String) view.getHotelComboBox3().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
                 view.getNameLabel().setText("Hotel Name : " + name);
@@ -127,6 +128,10 @@ public class HotelReservationSystemController {
         class BtnLowLevelInfoListener implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (view.getHotelComboBox3().getSelectedItem() == null) {
+                    view.displayMessage("Choose a hotel first");
+                    return;
+                }
                 String name = (String)view.getHotelComboBox3().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
                 view.displayLowLevelInfo();
@@ -153,17 +158,20 @@ public class HotelReservationSystemController {
                 view.removeListeners(view.getBtnCheckAvailability());
                 view.removeListeners(view.getBtnRoomInfo());
                 view.removeListeners(view.getBtnReservationInfo());
-                view.removeListeners(view.getBtnBackToView());
                 view.addBtnCheckAvailabilityListener(new BtnCheckAvailabilityListener());
                 view.addBtnRoomInfoListener(new BtnRoomInfoListener());
                 view.addBtnReservationInfoListener(new BtnReservationInfoListener());
-                view.addBtnBackToViewListener(new BtnBackToViewListener());
             }
         }
 
         class BtnCheckAvailabilityListener implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (view.getDateBox2().getSelectedItem() == null) {
+                    view.displayMessage("Choose a date first");
+                    return;
+                }
+
                 String name = (String)view.getHotelComboBox3().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
                 // Clear info
@@ -173,17 +181,25 @@ public class HotelReservationSystemController {
                 int bookedRooms = hotel.countReservations(date);
                 int availableRooms = hotel.countAvailableRooms(date);
                 view.getLowLevelLabel1().setText("Total number of booked rooms ---- " + bookedRooms);
-                view.getLowLevelLabel2().setText("Total number of available rooms - " + availableRooms);
+                view.getLowLevelLabel2().setText("Total number of available rooms -- " + availableRooms);
             }
         }
 
         class BtnRoomInfoListener implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (view.getRoomNumberBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose a room number first");
+                    return;
+                }
+                String RESET = "\u001B[0m";
+                String RED = "\u001B[31m";
+                String GREEN = "\u001B[32m";
+
                 String name = (String)view.getHotelComboBox3().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
                 // Set info to display
-                Room room = hotel.getRooms().get(Integer.parseInt((String) view.getRoomNumberBox().getSelectedItem()));
+                Room room = hotel.getRooms().get(Integer.parseInt((String) view.getRoomNumberBox().getSelectedItem()) - 1);
                 // Clear info
                 view.clearInfo();
                 view.getLowLevelLabel1().setText("Room Number : " + room.getNumber());
@@ -196,27 +212,27 @@ public class HotelReservationSystemController {
 
                     for (int i = 1; i <= 8; i++) {
                         if (room.getIsReserved(i))
-                            infoB1.append(i).append(" (R) ");
+                            infoB1.append(" X ");
                         else 
-                            infoB1.append(i).append(" (A) ");
+                            infoB1.append(i).append(" ");
                     }
                     for (int i = 9; i <= 16; i++) {
                         if (room.getIsReserved(i))
-                            infoB2.append(i).append(" (R) ");
+                            infoB2.append(" X ");
                         else 
-                            infoB2.append(i).append(" (A) ");
+                            infoB2.append(i).append(" ");
                     }
                     for (int i = 17; i <= 24; i++) {
                         if (room.getIsReserved(i))
-                            infoB3.append(i).append(" (R) ");
+                            infoB3.append(" X ");
                         else 
-                            infoB3.append(i).append(" (A) ");
+                            infoB3.append(i).append(" ");
                     }
                     for (int i = 17; i <= 24; i++) {
                         if (room.getIsReserved(i))
-                            infoB4.append(i).append(" (R) ");
+                            infoB4.append(" X ");
                         else 
-                            infoB4.append(i).append(" (A) ");
+                            infoB4.append(i).append(" ");
                     }
                 view.getLowLevelLabel4().setText(infoB1.toString());
                 view.getLowLevelLabel5().setText(infoB2.toString());
@@ -228,6 +244,11 @@ public class HotelReservationSystemController {
         class BtnReservationInfoListener implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (view.getReservationsBox2().getSelectedItem() == null) {
+                    view.displayMessage("Choose a reservation first");
+                    return;
+                }
+
                 String name = (String)view.getHotelComboBox3().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
                 // Set info to display
@@ -241,13 +262,6 @@ public class HotelReservationSystemController {
                 view.getLowLevelLabel4().setText("Room Number: " + reservation.getRoomInfo().getNumber());
                 view.getLowLevelLabel5().setText("Room Price: " + reservation.getRoomInfo().getPrice());
                 view.getLowLevelLabel6().setText("Total Price: " + reservation.getTotalPrice());
-            }
-        }
-
-        class BtnBackToViewListener implements ActionListener{
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
             }
         }
 
@@ -326,6 +340,19 @@ public class HotelReservationSystemController {
         class BtnAddRoomsListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (view.getHotelComboBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose a hotel first");
+                    return;
+                }
+                if (view.getTypeOfRoomBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose a type of room first");
+                    return;
+                }
+                if (view.getAddRoomBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose the number of rooms to add first");
+                    return;
+                }
+
                 String name = (String) view.getHotelComboBox().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
                 hotel.addRooms(Integer.parseInt((String) view.getAddRoomBox().getSelectedItem()), (String) view.getTypeOfRoomBox().getSelectedItem());
@@ -336,6 +363,19 @@ public class HotelReservationSystemController {
         class BtnRemoveRoomsListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (view.getHotelComboBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose a hotel first");
+                    return;
+                }
+                if (view.getTypeOfRoomBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose a type of room first");
+                    return;
+                }
+                if (view.getRemoveRoomBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose the number of rooms to add first");
+                    return;
+                }
+
                 String name = (String)view.getHotelComboBox().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
                 hotel.removeRooms(Integer.parseInt((String) view.getRemoveRoomBox().getSelectedItem()),
@@ -347,28 +387,46 @@ public class HotelReservationSystemController {
         class BtnChangeNameListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (view.getHotelComboBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose a hotel first");
+                    return;
+                }
+                if (view.getChangedNameInput().getText().isEmpty()) {
+                    view.displayMessage("Input a new name first");
+                    return;
+                }
+
                 String name = (String)view.getHotelComboBox().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
-                if (!model.isHotelNameUnique(view.getChangedNameInput())) {
+                if (!model.isHotelNameUnique(view.getChangedNameInput().getText())) {
                     view.displayMessage("Hotel " + view.getChangedNameInput() + " already exists");
                     return;
                 }
                 view.displayMessage("Hotel " + hotel.getHotelName() + " has been changed to " + view.getChangedNameInput());
-                hotel.setHotelName(view.getChangedNameInput());
+                hotel.setHotelName(view.getChangedNameInput().getText());
             }
         }
 
         class BtnChangePriceListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (view.getHotelComboBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose a hotel first");
+                    return;
+                }
+                if (view.getChangedPriceInput().getText().isEmpty()) {
+                    view.displayMessage("Input a new price first");
+                    return;
+                }
+
                 String name = (String)view.getHotelComboBox().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
                 try {
-                    if (Double.parseDouble(view.getChangedPriceInput()) < 100) {
+                    if (Double.parseDouble(view.getChangedPriceInput().getText()) < 100) {
                         view.displayMessage("Base price of hotel should be greater than 100");
                         return;
                     }
-                    hotel.setRoomPrice(Double.parseDouble(view.getChangedPriceInput()));
+                    hotel.setRoomPrice(Double.parseDouble(view.getChangedPriceInput().getText()));
                     view.displayMessage("Hotel " + hotel.getHotelName() + " base price is now " + view.getChangedPriceInput());
                 }
                 catch (NumberFormatException ex) {
@@ -381,6 +439,11 @@ public class HotelReservationSystemController {
         class BtnDeleteListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (view.getHotelComboBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose a hotel first");
+                    return;
+                }
+
                 String name = (String)view.getHotelComboBox().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
                 if (hotel.getHotelReservations().size() != 0) {
@@ -395,6 +458,21 @@ public class HotelReservationSystemController {
         class BtnDatePriceListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (view.getHotelComboBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose a hotel first");
+                    return;
+                }
+
+                if (view.getDatesBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose a date first");
+                    return;
+                }
+
+                if (view.getDatesPercentBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose a percentage first");
+                    return;
+                }
+
                 String name = (String)view.getHotelComboBox().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
                 int date = Integer.parseInt((String) view.getDatesBox().getSelectedItem());
@@ -414,6 +492,15 @@ public class HotelReservationSystemController {
         class BtnRemoveReservationListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (view.getHotelComboBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose a hotel first");
+                    return;
+                }
+                if (view.getHotelComboBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose reservation first");
+                    return;
+                }
+
                 String name = (String) view.getHotelComboBox().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
                 hotel.removeReservation((String) view.getReservationsBox().getSelectedItem());
@@ -424,6 +511,11 @@ public class HotelReservationSystemController {
         class BtnRemoveAllReservationListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (view.getHotelComboBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose a hotel first");
+                    return;
+                }
+
                 String name = (String)view.getHotelComboBox().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
                 hotel.clearReservations();
@@ -536,11 +628,31 @@ public class HotelReservationSystemController {
             public void actionPerformed(ActionEvent e) {
                 String name = (String) view.getHotelComboBox2().getSelectedItem();
                 Hotel hotel = model.getHotel(name);
-                String customerName = view.getCustomerNameFieldInput();
+                String customerName = view.getCustomerNameFieldInput().getText();
                 int checkInDate = Integer.parseInt((String) view.getCheckInDateBox().getSelectedItem());
                 int checkOutDate = Integer.parseInt((String) view.getCheckOutDateBox().getSelectedItem());
                 String roomType = (String) view.getRoomTypeBox().getSelectedItem();
-                String couponCode = view.getCouponCodeFieldInput();
+                String couponCode = view.getCouponCodeFieldInput().getText();
+
+                if (name.isEmpty()) {
+                    view.displayMessage("Choose a hotel first");
+                    return;
+                }
+                if (customerName.isEmpty()) {
+                    view.displayMessage("Input a customer name first");
+                    return;
+                }
+                if (view.getCheckInDateBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose a check-in date first");
+                    return;
+                }
+                if (view.getCheckOutDateBox().getSelectedItem() == null) {
+                    view.displayMessage("Choose a check-in date first");
+                    return;
+                }
+                if (view.getCouponCodeFieldInput().getText().isEmpty()) {
+                    couponCode = "0";
+                }
 
                 if (!couponCode.equals("I_WORK_HERE") && !couponCode.equals("STAY4_GET1") && !couponCode.equals("PAYDAY")
                     && !couponCode.equals("0")) {

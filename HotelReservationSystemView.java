@@ -33,7 +33,6 @@ public class HotelReservationSystemView extends JFrame {
     private JButton btnCheckAvailability = new JButton("Check Availability");
     private JButton btnRoomInfo = new JButton("Check Room Info");
     private JButton btnReservationInfo = new JButton("Check Reservation Info");
-    private JButton btnBackToView = new JButton("Add");
     private JButton btnLowLevelInfo = new JButton("More Information");
     private JLabel nameLabel = new JLabel("Hotel Name: ");
     private JLabel numOfRoomsLabel = new JLabel("Number of Rooms: ");
@@ -385,17 +384,8 @@ public class HotelReservationSystemView extends JFrame {
         gbc.gridy = 6;
         newInfoPanel.add(lowLevelLabel7, gbc);
 
-        JPanel BackToViewButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        BackToViewButtonPanel.setSize(new Dimension(5, 5)); // Fixed size for the panel
-
-        btnBackToView.setFont(new Font("Arial", Font.BOLD, 16));
-        btnBackToView.setSize(new Dimension(30, 5)); // Fixed size for the button
-
-        BackToViewButtonPanel.add(btnBackToView);
-
         lowLevelInformationPanel.add(LowLevelButtonPanel, BorderLayout.NORTH);
         lowLevelInformationPanel.add(newInfoPanel, BorderLayout.CENTER);
-        lowLevelInformationPanel.add(BackToViewButtonPanel, BorderLayout.SOUTH);
     }
 
     private void initManageHotelsPanel() {
@@ -554,7 +544,6 @@ public class HotelReservationSystemView extends JFrame {
         // Components
         JComboBox<String> hotelComboBox = new JComboBox<>();
         hotelComboBox.setBackground(Color.WHITE);
-        JTextField customerNameField = new JTextField();
         JComboBox<String> roomTypeComboBox = new JComboBox<>();
         roomTypeComboBox.setBackground(Color.WHITE);
         checkInDateBox.setBackground(Color.WHITE);
@@ -595,7 +584,7 @@ public class HotelReservationSystemView extends JFrame {
         checkOutDateBox.setPreferredSize(new Dimension(200, 30));
 
         // Coupon Code Label and TextField
-        JLabel couponCodeLabel = new JLabel("Coupon Code (None = 0):");
+        JLabel couponCodeLabel = new JLabel("Coupon Code (if any):");
         couponCodeLabel.setFont(labelFont);
         couponCodeField.setFont(fieldFont);
         couponCodeField.setHorizontalAlignment(JTextField.CENTER);
@@ -731,10 +720,6 @@ public class HotelReservationSystemView extends JFrame {
             btnLowLevelInfo.addActionListener(listener);
         }
 
-        public void addBtnBackToViewListener(ActionListener listener) {
-            btnBackToView.addActionListener(listener);
-        }
-
         public void addBtnCheckAvailabilityListener(ActionListener listener) {
             btnCheckAvailability.addActionListener(listener);
         }
@@ -849,8 +834,8 @@ public class HotelReservationSystemView extends JFrame {
         return numberOfExecutiveRoomsField.getText();
     }
 
-    public String getBasePriceInput() {
-        return basePriceField.getText();
+    public JTextField getBasePriceInput() {
+        return basePriceField;
     }
 
     public void displayMessage(String message){
@@ -881,12 +866,12 @@ public class HotelReservationSystemView extends JFrame {
         return removeRoomsBox;
     }
 
-    public String getChangedNameInput() {
-        return changeNameTextField.getText();
+    public JTextField getChangedNameInput() {
+        return changeNameTextField;
     }
 
-    public String getChangedPriceInput() {
-        return changePriceTextField.getText();
+    public JTextField getChangedPriceInput() {
+        return changePriceTextField;
     }
 
     public JComboBox<String> getDatesBox() {
@@ -917,12 +902,12 @@ public class HotelReservationSystemView extends JFrame {
         return checkOutDateBox;
     }
 
-    public String getCustomerNameFieldInput() {
-        return customerNameField.getText();
+    public JTextField getCustomerNameFieldInput() {
+        return customerNameField;
     }
 
-    public String getCouponCodeFieldInput() {
-        return couponCodeField.getText();
+    public JTextField getCouponCodeFieldInput() {
+        return couponCodeField;
     }
 
     public JLabel getNameLabel() {
@@ -998,7 +983,7 @@ public class HotelReservationSystemView extends JFrame {
     }
 
     public JButton getBtnView() {
-        return btnViewHotel;
+        return btnViewDetails;
     }
 
     public JButton getBtnLowLevelInfo() {
@@ -1015,10 +1000,6 @@ public class HotelReservationSystemView extends JFrame {
 
     public JButton getBtnReservationInfo() {
         return btnReservationInfo;
-    }
-
-    public JButton getBtnBackToView() {
-        return btnBackToView;
     }
 
     public JButton getBtnAddRooms() {

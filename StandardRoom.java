@@ -36,6 +36,7 @@ public class StandardRoom extends Room {
     return "Standard";
   }
 
+
   /**
    * Sets the price of the room.
    *

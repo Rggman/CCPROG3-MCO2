@@ -43,6 +43,7 @@ public class HotelReservationSystemModel {
         hotels.add(hotel);
     }
 
+
     /**
      * Checks if a hotel name is unique within the system.
      *

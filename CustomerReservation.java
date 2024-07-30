@@ -56,7 +56,6 @@ public class CustomerReservation {
         this.totalPrice = calculatedTotalPrice;
         return totalPrice;
     }
-
     /**
      * Retrieves the name of the customer who made the reservation.
      *

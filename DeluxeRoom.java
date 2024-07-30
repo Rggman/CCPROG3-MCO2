@@ -6,7 +6,6 @@
 public class DeluxeRoom extends Room {
 
   private double price;
-
   /**
    * Constructs a DeluxeRoom object with the specified room number and price.
    * The price is adjusted by multiplying the given price by 1.25.

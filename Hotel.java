@@ -224,6 +224,7 @@ public class Hotel {
         numOfRooms += howMany;
     }
 
+
     /**
      * Removes a specified number of rooms from the hotel if they are unreserved.
      *

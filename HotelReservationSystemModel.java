@@ -13,7 +13,7 @@ public class HotelReservationSystemModel {
     }
 
     public void createHotel(String hotelName, double basePrice, int numOfStandardRooms,
-            int numOfDeluxeRooms, int numOfExecutiveRooms) {
+                            int numOfDeluxeRooms, int numOfExecutiveRooms) {
         Hotel hotel = new Hotel(hotelName, basePrice, numOfStandardRooms, numOfDeluxeRooms,
                 numOfExecutiveRooms);
         hotels.add(hotel);
@@ -39,5 +39,17 @@ public class HotelReservationSystemModel {
 
     public void removeHotel(String hotelName) {
         hotels.removeIf(hotel -> hotel.getHotelName().equalsIgnoreCase(hotelName));
+    }
+
+    public void addReservation(String hotelName, String customerName, int checkInDate, int checkOutDate, String roomType, String couponCode) {
+        Hotel hotel = getHotel(hotelName);
+        if (hotel != null) {
+            Room availableRoom = hotel.findAvailableRoom(checkInDate, checkOutDate, roomType);
+            if (availableRoom != null) {
+                availableRoom.setIsReserved(checkInDate, checkOutDate, true);
+                CustomerReservation reservation = new CustomerReservation(customerName, checkInDate, checkOutDate, availableRoom, couponCode , hotel);
+                hotel.getHotelReservations().add(reservation);
+            }
+        }
     }
 }

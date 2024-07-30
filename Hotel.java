@@ -28,27 +28,27 @@ public class Hotel {
         this.numOfRooms = numOfStandardRooms + numOfDeluxeRooms + numOfExecutiveRooms;
         this.rooms = new ArrayList<>();
         this.percent = new float[31];
-    
+
         int roomNumber = 1;
-    
+
         for (int i = 0; i < numOfStandardRooms; i++) {
             this.rooms.add(new StandardRoom(roomNumber++, basePrice));
         }
-    
+
         for (int i = 0; i < numOfDeluxeRooms; i++) {
             this.rooms.add(new DeluxeRoom(roomNumber++, basePrice));
         }
-    
+
         for (int i = 0; i < numOfExecutiveRooms; i++) {
             this.rooms.add(new ExecutiveRoom(roomNumber++, basePrice));
         }
-    
+
         this.reservations = new ArrayList<>();
 
         for (int i = 0; i < 31; i++)
             percent[i] = 1.00f;
     }
-    
+
 
     /**
      * Gets the name of the hotel.
@@ -84,6 +84,14 @@ public class Hotel {
      */
     public ArrayList<CustomerReservation> getHotelReservations() {
         return reservations;
+    }
+
+    public CustomerReservation getHotelReservation(String name) {
+        for (CustomerReservation r : reservations) {
+            if (r.getCustomerName().equals(name))
+                return r;
+        }
+        return null;
     }
 
     /**
@@ -174,7 +182,7 @@ public class Hotel {
                 rooms.add(new StandardRoom(i, rooms.getFirst().getBasePrice()));
             else if (type.equals("Deluxe"))
                 rooms.add(new DeluxeRoom(i, rooms.getFirst().getBasePrice()));
-            else 
+            else
                 rooms.add(new ExecutiveRoom(i, rooms.getFirst().getBasePrice()));
         }
         numOfRooms += howMany;
@@ -203,8 +211,11 @@ public class Hotel {
      */
     public void clearReservations() {
         reservations.clear();
+        for (Room room : rooms) {
+            room.setIsReserved(1, 31, false);
+        }
     }
-    
+
     public void removeReservation(String name) {
         for (int i = 0; i < reservations.size(); i++) {
             if (name.equals(reservations.get(i).getCustomerName())) {

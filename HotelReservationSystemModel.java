@@ -99,7 +99,7 @@ public class HotelReservationSystemModel {
             Room availableRoom = hotel.findAvailableRoom(checkInDate, checkOutDate, roomType);
             if (availableRoom != null) {
                 availableRoom.setIsReserved(checkInDate, checkOutDate, true);
-                CustomerReservation reservation = new CustomerReservation(customerName, checkInDate, checkOutDate, availableRoom, couponCode , hotel);
+                CustomerReservation reservation = new CustomerReservation(customerName, checkInDate, checkOutDate, availableRoom, couponCode, hotel);
                 hotel.getHotelReservations().add(reservation);
             }
         }

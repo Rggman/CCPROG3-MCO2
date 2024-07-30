@@ -606,15 +606,12 @@ public class HotelReservationSystemView extends JFrame {
         roomTypeBox.setBackground(Color.WHITE);
         checkInDateBox.setBackground(Color.WHITE);
         checkOutDateBox.setBackground(Color.WHITE);
-        JTextField couponCodeField = new JTextField();
-
 
         // Hotel Label and ComboBox
         JLabel hotelLabel = new JLabel("Select Hotel:");
         hotelLabel.setFont(labelFont);
         hotelComboBox2.setFont(fieldFont);
         hotelComboBox2.setPreferredSize(new Dimension(200, 30));
-
 
         // Customer Name Label and TextField
         JLabel customerNameLabel = new JLabel("Customer Name:");

@@ -738,7 +738,7 @@ public class HotelReservationSystemController {
                 view.displayMessage("Choose a check-in date first");
                 return;
             }
-            if (view.getCouponCodeFieldInput().getText().isEmpty()) {
+            if (couponCode.isEmpty()) {
                 couponCode = "0";
             }
 

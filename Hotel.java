@@ -19,7 +19,6 @@ public class Hotel {
      * Initializes rooms and reservations.
      *
      * @param name       The name of the hotel.
-     * @param numOfRooms The initial number of rooms in the hotel.
      * @param basePrice  The base price for each room.
      */
     public Hotel(String name, double basePrice, int numOfStandardRooms, int numOfDeluxeRooms, int numOfExecutiveRooms) {

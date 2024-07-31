@@ -49,7 +49,7 @@ public class CustomerReservation {
 
         switch (couponCode) {
             case "I_WORK_HERE" -> calculatedTotalPrice= calculatedTotalPrice * 0.9;
-            case "STAY4_GET1" -> calculatedTotalPrice = calculatedTotalPrice - roomInfo.getPrice();
+            case "STAY4_GET1" -> calculatedTotalPrice = calculatedTotalPrice - (roomInfo.getPrice() * datePercent[checkInDate - 1]);
             case "PAYDAY" -> calculatedTotalPrice = calculatedTotalPrice * 0.93;
             case null, default -> calculatedTotalPrice = calculatedTotalPrice;
         }
@@ -105,6 +105,17 @@ public class CustomerReservation {
      */
     public double getDatePercent(int date) {
         return this.datePercent[date - 1];
+    }
+
+
+    /**
+     * Retrieves the coupon code associated with this reservation.
+     *
+     * @return the String coupon code
+     */
+
+    public String getCouponCode() {
+        return this.couponCode;
     }
 
     /**

@@ -567,7 +567,7 @@ public class HotelReservationSystemView extends JFrame {
 
         gbc.gridy = 6;
         gbc.gridx = 0;
-        formPanel.add(new JLabel("Delete Hotel:"), gbc);
+        formPanel.add(new JLabel("Remove Reservations:"), gbc);
         gbc.gridx = 1;
         reservationsBox.setBackground(Color.WHITE);
         formPanel.add(reservationsBox, gbc);
@@ -1460,6 +1460,16 @@ public class HotelReservationSystemView extends JFrame {
      */
     public JButton getBtnCreateSubmit() {
         return btnCreateSubmit;
+    }
+
+    /**
+     * Returns the JButton used for low level info
+     *
+     * @return the btnPriceBreakDown JButton
+     */
+
+    public JButton getBtnPriceBreakDown() {
+        return btnPriceBreakDown;
     }
 
     /**

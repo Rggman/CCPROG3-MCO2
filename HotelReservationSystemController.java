@@ -187,6 +187,7 @@ public class HotelReservationSystemController {
             view.addBtnCheckAvailabilityListener(new BtnCheckAvailabilityListener());
             view.addBtnRoomInfoListener(new BtnRoomInfoListener());
             view.addBtnReservationInfoListener(new BtnReservationInfoListener());
+            view.removeListeners(view.getBtnPriceBreakDown());
             view.addBtnPriceBreakdownListener(new BtnPriceBreakdownListener());
             view.clearLowLevelForm();
         }
@@ -210,7 +211,12 @@ public class HotelReservationSystemController {
 
             int j = 0;
             for (int i = reservation.getCheckInDate(); i < reservation.getCheckOutDate(); i++) {
-                display[j] = "Day " + (j+1) + ": " + reservation.getRoomInfo().getPrice() * reservation.getDatePercent(i);
+                if((reservation.getCouponCode().equals("STAY4_GET1")) && j == 0){
+                    display[j] = "Day " + (j+1) + ": " + "FREE";
+                }
+                else{
+                    display[j] = "Day " + (j+1) + ": " + reservation.getRoomInfo().getPrice() * reservation.getDatePercent(i);
+                }
                 j++;
             }
             JOptionPane.showMessageDialog(null, display);
